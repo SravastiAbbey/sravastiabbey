@@ -5,6 +5,8 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
+import CheckupScreen from '../screens/CheckupScreen';
+import PracticeScreen from '../screens/PracticeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 const HomeStack = createStackNavigator({
@@ -12,14 +14,14 @@ const HomeStack = createStackNavigator({
 });
 
 HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
+  tabBarLabel: 'Motivation',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+          ? `ios-heart${focused ? '' : '-outline'}`
+          : 'md-heart'
       }
     />
   ),
@@ -30,11 +32,39 @@ const LinksStack = createStackNavigator({
 });
 
 LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+  tabBarLabel: 'Quote',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link'}
+      name={Platform.OS === 'ios' ? `ios-quote${focused ? '' : '-outline'}` : 'md-quote'}
+    />
+  ),
+};
+
+const CheckupStack = createStackNavigator({
+  Checkup: CheckupScreen,
+});
+
+CheckupStack.navigationOptions = {
+  tabBarLabel: 'Checkup',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? `ios-medkit${focused ? '' : '-outline'}` : 'md-medkit'}
+    />
+  ),
+};
+
+const PracticeStack = createStackNavigator({
+  Pricetice: PracticeScreen,
+});
+
+PracticeStack.navigationOptions = {
+  tabBarLabel: 'Practice',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? `ios-body${focused ? '' : '-outline'}` : 'md-body'}
     />
   ),
 };
@@ -44,11 +74,11 @@ const SettingsStack = createStackNavigator({
 });
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+  tabBarLabel: 'More',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
+      name={Platform.OS === 'ios' ? `ios-more${focused ? '' : '-outline'}` : 'md-more'}
     />
   ),
 };
@@ -56,5 +86,7 @@ SettingsStack.navigationOptions = {
 export default createBottomTabNavigator({
   HomeStack,
   LinksStack,
+  CheckupStack,
+  PracticeStack,
   SettingsStack,
 });
