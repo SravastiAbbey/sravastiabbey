@@ -19,7 +19,7 @@ export default class MoreScreen extends React.Component {
         <Touchable
           style={styles.option}
           background={Touchable.Ripple('#ccc', false)}
-          onPress={this._handlePressDocs}>
+          onPress={this._handlePressAbout}>
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.optionIconContainer}>
             <Icon.Ionicons name="ios-information-circle-outline" size={22} />
@@ -35,7 +35,7 @@ export default class MoreScreen extends React.Component {
         <Touchable
           background={Touchable.Ripple('#ccc', false)}
           style={styles.option}
-          onPress={this._handlePressSlack}>
+          onPress={this._handlePressStudy}>
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.optionIconContainer}>
               <Icon.Ionicons name="ios-folder-outline" size={22} />
@@ -51,7 +51,7 @@ export default class MoreScreen extends React.Component {
         <Touchable
           style={styles.option}
           background={Touchable.Ripple('#ccc', false)}
-          onPress={this._handlePressForums}>
+          onPress={this._handlePressBook}>
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.optionIconContainer}>
               <Icon.Ionicons name="ios-book-outline" size={22} />
@@ -67,7 +67,7 @@ export default class MoreScreen extends React.Component {
         <Touchable
           style={styles.option}
           background={Touchable.Ripple('#ccc', false)}
-          onPress={this._handlePressForums}>
+          onPress={this._handlePressContact}>
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.optionIconContainer}>
               <Icon.Ionicons name="ios-chatboxes-outline" size={22} />
@@ -83,16 +83,19 @@ export default class MoreScreen extends React.Component {
     );
   }
 
-  _handlePressSlack = () => {
-    WebBrowser.openBrowserAsync('https://slack.expo.io');
+  _handlePressAbout = () => {
+    WebBrowser.openBrowserAsync('https://sravastiabbey.org');
   };
 
-  _handlePressDocs = () => {
-    WebBrowser.openBrowserAsync('http://docs.expo.io');
+  _handlePressStudy = () => {
+    WebBrowser.openBrowserAsync('https://sravastiabbey.org');
   };
 
-  _handlePressForums = () => {
-    WebBrowser.openBrowserAsync('http://forums.expo.io');
+  _handlePressBook = () => {
+    WebBrowser.openBrowserAsync('https://sravastiabbey.org');
+  };
+  _handlePressContact = () => {
+    WebBrowser.openBrowserAsync('https://sravastiabbey.org');
   };
 }
 
