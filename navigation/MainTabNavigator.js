@@ -7,7 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import CheckupScreen from '../screens/CheckupScreen';
 import PracticeScreen from '../screens/PracticeScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import MoreScreen from '../screens/MoreScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -69,11 +69,11 @@ PracticeStack.navigationOptions = {
   ),
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+const MoreStack = createStackNavigator({
+  More: MoreScreen,
 });
 
-SettingsStack.navigationOptions = {
+MoreStack.navigationOptions = {
   tabBarLabel: 'More',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -88,5 +88,5 @@ export default createBottomTabNavigator({
   LinksStack,
   CheckupStack,
   PracticeStack,
-  SettingsStack,
+  MoreStack,
 });
