@@ -3,17 +3,17 @@ import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import MotivationScreen from '../screens/MotivationScreen';
+import QuoteScreen from '../screens/QuoteScreen';
 import CheckupScreen from '../screens/CheckupScreen';
 import PracticeScreen from '../screens/PracticeScreen';
 import MoreScreen from '../screens/MoreScreen';
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+const MotivationStack = createStackNavigator({
+  Motivation: MotivationScreen,
 });
 
-HomeStack.navigationOptions = {
+MotivationStack.navigationOptions = {
   tabBarLabel: 'Motivation',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -27,11 +27,11 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const QuoteStack = createStackNavigator({
+  Quote: QuoteScreen,
 });
 
-LinksStack.navigationOptions = {
+QuoteStack.navigationOptions = {
   tabBarLabel: 'Quote',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -84,8 +84,8 @@ MoreStack.navigationOptions = {
 };
 
 export default createBottomTabNavigator({
-  HomeStack,
-  LinksStack,
+  MotivationStack,
+  QuoteStack,
   CheckupStack,
   PracticeStack,
   MoreStack,

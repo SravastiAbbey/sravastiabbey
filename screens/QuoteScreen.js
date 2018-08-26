@@ -1,18 +1,16 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { ExpoLinksView } from '@expo/samples';
+import UnderConstruction from '../components/UnderConstruction';
 
-export default class LinksScreen extends React.Component {
+export default class QuoteScreen extends React.Component {
   static navigationOptions = {
-    title: 'Links',
+    title: 'Quote',
   };
 
   render() {
     return (
       <ScrollView style={styles.container}>
-        {/* Go ahead and delete ExpoLinksView and replace it with your
-           * content, we just wanted to provide you with some helpful links */}
-        <ExpoLinksView />
+        <UnderConstruction name="Quote" />
       </ScrollView>
     );
   }
