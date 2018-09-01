@@ -84,15 +84,15 @@ export default class MoreScreen extends React.Component {
   }
 
   _handlePressAbout = () => {
-    WebBrowser.openBrowserAsync('https://sravastiabbey.org');
+    WebBrowser.openBrowserAsync('https://sravastiabbey.org/who-we-are/');
   };
 
   _handlePressStudy = () => {
-    WebBrowser.openBrowserAsync('https://sravastiabbey.org');
+    WebBrowser.openBrowserAsync('https://sravastiabbey.org/learn-meditation/');
   };
 
   _handlePressBook = () => {
-    WebBrowser.openBrowserAsync('https://sravastiabbey.org');
+    WebBrowser.openBrowserAsync('http://thubtenchodron.org/books/for-free-distribution/');
   };
   _handlePressContact = () => {
     WebBrowser.openBrowserAsync('https://sravastiabbey.org');
