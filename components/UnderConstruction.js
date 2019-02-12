@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from 'expo';
 import { StyleSheet, Text, View } from 'react-native';
+import Colors from '../constants/Colors';
 
 
 export default class UnderConstruction extends React.Component {
@@ -10,7 +11,7 @@ export default class UnderConstruction extends React.Component {
       <Icon.Ionicons
         name="ios-construct"
         size={128}
-        color={"tomato"}
+        color={Colors.tintColor}
       />
       <Text style={styles.optionText}>
       {this.props.name} Under Construction!
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
   optionText: {
     fontSize: 32,
     marginTop: 1,
-    color: "tomato",
+    color: Colors.tintColor,
   },
   getStartedText: {
     marginTop: 20,

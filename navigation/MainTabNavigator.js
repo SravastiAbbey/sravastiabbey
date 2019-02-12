@@ -2,6 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
+import Colors from '../constants/Colors';
 import TabBarIcon from '../components/TabBarIcon';
 import MotivationScreen from '../screens/MotivationScreen';
 import QuoteScreen from '../screens/QuoteScreen';
@@ -18,11 +19,7 @@ MotivationStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-heart${focused ? '' : '-outline'}`
-          : 'md-heart'
-      }
+      name={ Platform.OS === 'ios' ? `heart${focused ? '_red' : ''}` : 'heart' }
     />
   ),
 };
@@ -36,7 +33,7 @@ QuoteStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-quote${focused ? '' : '-outline'}` : 'md-quote'}
+      name={Platform.OS === 'ios' ? `quote${focused ? '_red' : ''}` : 'quote'}
     />
   ),
 };
@@ -50,7 +47,7 @@ CheckupStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-checkbox${focused ? '' : '-outline'}` : 'md-checkbox'}
+      name={Platform.OS === 'ios' ? `list${focused ? '_red' : ''}` : 'list'}
     />
   ),
 };
@@ -64,7 +61,7 @@ PracticeStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-body${focused ? '' : '-outline'}` : 'md-body'}
+      name={Platform.OS === 'ios' ? `lotus${focused ? '_red' : ''}` : 'lotus'}
     />
   ),
 };
@@ -84,9 +81,14 @@ MoreStack.navigationOptions = {
 };
 
 export default createBottomTabNavigator({
-  MotivationStack,
-  QuoteStack,
-  CheckupStack,
-  PracticeStack,
-  MoreStack,
+    MotivationStack,
+    QuoteStack,
+    CheckupStack,
+    PracticeStack,
+    MoreStack,
+  }, 
+  {
+    tabBarOptions: {
+    activeTintColor: Colors.tintColor,
+  }
 });

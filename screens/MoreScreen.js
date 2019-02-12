@@ -3,10 +3,17 @@ import { StyleSheet, Image, Text, View } from 'react-native';
 import { WebBrowser } from 'expo';
 import { Icon } from 'expo';
 import Touchable from 'react-native-platform-touchable';
+import Colors from '../constants/Colors';
 
 export default class MoreScreen extends React.Component {
   static navigationOptions = {
     title: 'More',
+    headerTintColor: Colors.tintColor,
+    headerBackground: (
+      <Image style={{ flex: 1, width: undefined, height: undefined, resizeMode: 'contain' }} 
+        source={require('../assets/images/header.png')}
+      />
+    ),
   };
 
   render() {

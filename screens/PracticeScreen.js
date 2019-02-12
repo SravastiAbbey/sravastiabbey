@@ -1,10 +1,17 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { Image, ScrollView, StyleSheet } from 'react-native';
 import UnderConstruction from '../components/UnderConstruction';
+import Colors from '../constants/Colors';
 
 export default class PracticeScreen extends React.Component {
   static navigationOptions = {
     title: 'Practice',
+    headerTintColor: Colors.tintColor,
+    headerBackground: (
+      <Image style={{ flex: 1, width: undefined, height: undefined, resizeMode: 'contain' }} 
+        source={require('../assets/images/header.png')}
+      />
+    ),
   };
 
   render() {
