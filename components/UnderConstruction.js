@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
 import Colors from '../constants/Colors';
 
@@ -8,7 +8,7 @@ export default class UnderConstruction extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-      <Icon.Ionicons
+      <Ionicons
         name="ios-construct"
         size={128}
         color={Colors.tintColor}

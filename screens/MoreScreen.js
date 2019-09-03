@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Image, Text, View } from 'react-native';
-import { WebBrowser } from 'expo';
-import { Icon } from 'expo';
+import * as WebBrowser from 'expo-web-browser';
+import { Ionicons } from '@expo/vector-icons';
 import Touchable from 'react-native-platform-touchable';
 import Colors from '../constants/Colors';
 
@@ -29,7 +29,7 @@ export default class MoreScreen extends React.Component {
           onPress={this._handlePressAbout}>
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.optionIconContainer}>
-            <Icon.Ionicons name="ios-information-circle-outline" size={22} />
+            <Ionicons name="ios-information-circle" size={22} />
             </View>
             <View style={styles.optionTextContainer}>
               <Text style={styles.optionText}>
@@ -45,7 +45,7 @@ export default class MoreScreen extends React.Component {
           onPress={this._handlePressStudy}>
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.optionIconContainer}>
-              <Icon.Ionicons name="ios-folder-outline" size={22} />
+              <Ionicons name="ios-folder-open" size={22} />
             </View>
             <View style={styles.optionTextContainer}>
               <Text style={styles.optionText}>
@@ -61,7 +61,7 @@ export default class MoreScreen extends React.Component {
           onPress={this._handlePressBook}>
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.optionIconContainer}>
-              <Icon.Ionicons name="ios-book-outline" size={22} />
+              <Ionicons name="ios-book" size={22} />
             </View>
             <View style={styles.optionTextContainer}>
               <Text style={styles.optionText}>
@@ -77,7 +77,7 @@ export default class MoreScreen extends React.Component {
           onPress={this._handlePressContact}>
           <View style={{ flexDirection: 'row' }}>
             <View style={styles.optionIconContainer}>
-              <Icon.Ionicons name="ios-chatboxes-outline" size={22} />
+              <Ionicons name="ios-chatboxes" size={22} />
             </View>
             <View style={styles.optionTextContainer}>
               <Text style={styles.optionText}>

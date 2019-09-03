@@ -1,7 +1,6 @@
 import React from 'react';
-import { Icon } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'react-native';
-
 import Colors from '../constants/Colors';
 
 const images = {
@@ -34,7 +33,7 @@ export default class TabBarIcon extends React.Component {
         );
       default:
         return (
-          <Icon.Ionicons
+          <Ionicons
             name={this.props.name}
             size={26}
             style={{ marginBottom: -3 }}

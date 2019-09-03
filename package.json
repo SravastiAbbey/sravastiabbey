@@ -14,15 +14,15 @@
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
-    "expo": "^30.0.0",
-    "react": "16.3.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+    "expo": "^34.0.0",
+    "react": "16.8.3",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
     "react-navigation": "^2.18.3",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1"
   },
   "devDependencies": {
-    "jest-expo": "^30.0.0",
+    "jest-expo": "^34.0.0",
     "redux-devtools": "^3.5.0"
   }
 }
