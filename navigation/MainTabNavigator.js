@@ -1,6 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { Image } from 'react-native';
 
 import Colors from '../constants/Colors';
 import TabBarIcon from '../components/TabBarIcon';
@@ -38,9 +39,7 @@ QuoteStack.navigationOptions = {
   ),
 };
 
-const CheckupStack = createStackNavigator({
-  Checkup: CheckupScreen,
-});
+const CheckupStack = createStackNavigator({Checkup: CheckupScreen});
 
 CheckupStack.navigationOptions = {
   tabBarLabel: 'Checkup',
@@ -66,10 +65,7 @@ PracticeStack.navigationOptions = {
   ),
 };
 
-const MoreStack = createStackNavigator({
-  More: MoreScreen,
-});
-
+const MoreStack = createStackNavigator({More: MoreScreen});
 MoreStack.navigationOptions = {
   tabBarLabel: 'More',
   tabBarIcon: ({ focused }) => (

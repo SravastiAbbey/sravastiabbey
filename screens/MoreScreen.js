@@ -9,6 +9,7 @@ export default class MoreScreen extends React.Component {
   static navigationOptions = {
     title: 'More',
     headerTintColor: Colors.tintColor,
+    headerTitleStyle :{textAlign: 'center', alignSelf:'center', flex:1},
     headerBackground: (
       <Image style={{ flex: 1, width: undefined, height: undefined, resizeMode: 'contain' }} 
         source={require('../assets/images/header.png')}

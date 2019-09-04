@@ -15,6 +15,7 @@ export default class MotivationScreen extends React.Component {
   static navigationOptions = {
     title: 'Motivation',
     headerTintColor: Colors.tintColor,
+    headerTitleStyle :{textAlign: 'center', alignSelf:'center', flex:1},
     headerBackground: (
       <Image style={{ flex: 1, width: undefined, height: undefined, resizeMode: 'contain' }} 
         source={require('../assets/images/header.png')}
