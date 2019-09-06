@@ -84,6 +84,7 @@ export default createBottomTabNavigator({
     MoreStack,
   }, 
   {
+    initialRouteName: 'QuoteStack',
     tabBarOptions: {
     activeTintColor: Colors.tintColor,
   }

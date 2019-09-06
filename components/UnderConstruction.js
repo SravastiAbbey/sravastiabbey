@@ -9,7 +9,7 @@ export default class UnderConstruction extends React.Component {
     return (
       <View style={styles.container}>
       <Ionicons
-        name="ios-construct"
+        name="ios-build"
         size={128}
         color={Colors.tintColor}
       />
