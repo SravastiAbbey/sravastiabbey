@@ -4,8 +4,8 @@ import { Button as RNEButton } from 'react-native-elements';
 import UnderConstruction from '../components/UnderConstruction';
 import Colors from '../constants/Colors';
 import Links from '../constants/Links';
-import AudioFiles from '../constants/AudioFiles'
 import Anchor from '../components/Anchor';
+import AudioPlayer from "../AudioPlayer";
 import AnimatedTextSwitch from "../components/AnimatedTextSwitch";
 import { Audio } from 'expo-av';
 
@@ -34,26 +34,11 @@ export default class PracticeScreen extends React.Component {
 
   async playMeditationOnTheBuddha() {
 
-    // stop any playing sound
-    if (this.playingSoundObject != null) {
-      await this.playingSoundObject.stopAsync();
+    try {
+      AudioPlayer('meditationOnTheBuddha');
     }
+    catch (e) {
 
-    // if we were playing this sound, just stop it
-    if (this.playSoundId === "meditation-on-the-buddha") {
-      this.playSoundId = null;
-      this.playingSoundObject = null;
-    }
-    // otherwise, we stopped another sound, so go ahead and play this one
-    else {
-      try {
-        const soundObject = await AudioFiles.loadSound(AudioFiles.meditationOnTheBuddha, true);
-        this.playingSoundObject = soundObject;
-        this.playSoundId = "meditation-on-the-buddha"
-      }
-      catch (e) {
-
-      }
     }
 
   }
