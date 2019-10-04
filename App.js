@@ -50,6 +50,11 @@ export default class App extends React.Component {
         // to remove this if you are not using it in your app
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
         'caveat': require('./assets/fonts/Caveat-Regular.ttf'),
+        'open-sans-regular': require('./assets/fonts/OpenSans-Regular.ttf'),
+        'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+        'open-sans-semibold': require('./assets/fonts/OpenSans-SemiBold.ttf'),
+        'open-sans-light': require('./assets/fonts/OpenSans-Light.ttf'),
+        'open-sans-italic': require('./assets/fonts/OpenSans-Italic.ttf'),
       }),
     ]);
   };

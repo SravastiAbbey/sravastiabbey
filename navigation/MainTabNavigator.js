@@ -71,7 +71,7 @@ MoreStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-more${focused ? '' : '-outline'}` : 'md-more'}
+      name={Platform.OS === 'ios' ? `ios-more` : 'md-more'}
     />
   ),
 };
@@ -79,7 +79,6 @@ MoreStack.navigationOptions = {
 export default createBottomTabNavigator({
     MotivationStack,
     QuoteStack,
-    CheckupStack,
     PracticeStack,
     MoreStack,
   }, 

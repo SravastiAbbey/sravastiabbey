@@ -24,9 +24,8 @@ export default class QuoteScreen extends React.Component {
 
   render() {
       return (
-        <TouchableWithoutFeedback style={styles.container} 
-          onPress={ this.handleClick }>
-        <View style={styles.quoteContainer}>
+        <TouchableWithoutFeedback style={styles.container} onPress={ this.handleClick }>
+          <View style={styles.quoteContainer}>
             <AnimatedTextSwitch style={styles.quoteText}>
               {quotes.quotes[this.state.random].quote}            
             </AnimatedTextSwitch>
@@ -63,9 +62,15 @@ const colors = {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 15,
+    backgroundColor: '#fff',
+  },
   quoteContainer: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: '#fff',
   },
   quoteText: {
     padding: 10,
