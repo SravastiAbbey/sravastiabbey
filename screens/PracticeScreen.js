@@ -8,6 +8,7 @@ import Anchor from '../components/Anchor';
 import AudioPlayer from "../AudioPlayer";
 import AnimatedTextSwitch from "../components/AnimatedTextSwitch";
 import { Audio } from 'expo-av';
+import styles from '../styles/main';
 
 export default class PracticeScreen extends React.Component {
 
@@ -27,18 +28,13 @@ export default class PracticeScreen extends React.Component {
     ),
   };
 
-
-
-  playingSoundObject = null;
-  playSoundId = null;
-
   async playMeditationOnTheBuddha() {
 
     try {
       AudioPlayer('meditationOnTheBuddha');
     }
     catch (e) {
-
+      // do something with the error
     }
 
   }
@@ -448,38 +444,3 @@ export default class PracticeScreen extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-    backgroundColor: '#fff',
-  },
-  quoteContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  bodyText: {
-    padding: 10,
-    fontSize: 16,
-    color: Colors.tintColor,
-    fontFamily: 'open-sans-regular',
-  },
-  blockQuote: {
-    fontSize: 16,
-    padding:1,
-    color: Colors.tintColor,
-    fontFamily: 'open-sans-italic',
-  },
-  blockQuoteContainer: {
-    padding: 20,
-    paddingLeft: 20,
-  },
-  headerText: {
-    padding: 20,
-    paddingLeft: 10,
-    fontSize: 22,
-    color: Colors.tintColor,
-    fontFamily: 'open-sans-bold',
-  },
-});

@@ -5,6 +5,8 @@ import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import AppNavigator from './navigation/AppNavigator';
+import { Provider } from 'mobx-react';
+import observableStore from './store';
 
 export default class App extends React.Component {
   state = {
@@ -24,7 +26,9 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
+          <Provider observableStore={observableStore}>
+            <AppNavigator />
+          </Provider>
         </View>
       );
     }
