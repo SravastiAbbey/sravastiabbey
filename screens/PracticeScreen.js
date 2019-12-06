@@ -15,7 +15,8 @@ import { Entypo } from '@expo/vector-icons';
 class AnimatedSoundButton extends React.Component {
 
   state = {
-    fadeValue: new Animated.Value(1.0)
+    fadeValue: new Animated.Value(1.0),
+    active: false
   };
 
   _start = () => {
@@ -39,19 +40,26 @@ class AnimatedSoundButton extends React.Component {
 
   mainColor = '#3f7bd9';
 
+  _onPress = () => {
+    if (!this.state.active) {
+      this._start()
+    }
+    else {
+      this.state.fadeValue.stopAnimation(() => {
+        this.state.fadeValue.setValue(1.0);
+      });
+    }
+    this.setState({active: !this.state.active});
+    this.props.action();
+  };
+
   render() {
 
     let {title, action} = this.props;
 
     return (
-      <Animated.View style={{
-        opacity: this.state.fadeValue,
-        width:'90%',
-        marginLeft:'5%',
-        marginVertical:10
-      }}>
         <TouchableOpacity
-          onPress={() => this._start()}
+          onPress={this._onPress}
           style={{
             marginTop:20,
             marginBottom:20,
@@ -64,27 +72,41 @@ class AnimatedSoundButton extends React.Component {
             borderWidth: 1,
             paddingVertical:10,
             paddingHorizontal:5,
-            margin:5,
-            ...Platform.select({
-              ios: {
-                elevation: 0,
-                shadowOpacity: 0
-              }
-            })
+            width:'90%',
+            marginLeft:'5%'
           }}
         >
-          <Entypo
-            name={"sound"}
-            size={22}
-            color={this.mainColor}
-          />
+          <Animated.View
+            style={{
+              opacity: this.state.fadeValue,
+              transform: [
+                {
+                  scaleX: this.state.fadeValue.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0.7, 1.1]
+                  })
+                },
+                {
+                  scaleY: this.state.fadeValue.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0.7, 1.1]
+                  })
+                }
+              ]
+            }}
+          >
+            <Entypo
+              name={"sound"}
+              size={22}
+              color={this.mainColor}
+            />
+          </Animated.View>
           <Text style={{
             marginLeft:10,
             color: this.mainColor,
             fontSize: 18
           }}>{title}</Text>
         </TouchableOpacity>
-      </Animated.View>
     );
   }
 }
@@ -168,7 +190,7 @@ export default class PracticeScreen extends React.Component {
   async playMeditationOnTheBuddha() {
 
     try {
-      AudioPlayer('meditationOnTheBuddha');
+      await AudioPlayer('meditationOnTheBuddha');
     }
     catch (e) {
       // do something with the error
@@ -179,7 +201,7 @@ export default class PracticeScreen extends React.Component {
   async playTheBuddhasMantra() {
 
     try {
-      AudioPlayer('buddhaMantra');
+      await AudioPlayer('buddhaMantra');
     }
     catch (e) {
       // do something with the error
@@ -190,7 +212,7 @@ export default class PracticeScreen extends React.Component {
   async playTheMeaningOfTheMantra() {
 
     try {
-      AudioPlayer('meaningOfTheMantra');
+      await AudioPlayer('meaningOfTheMantra');
     }
     catch (e) {
       // do something with the error
