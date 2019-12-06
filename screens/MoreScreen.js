@@ -21,6 +21,26 @@ export default class MoreScreen extends React.Component {
     return (
       <View>
         <Text style={styles.optionsTitleText}>
+          Settings
+        </Text>
+
+        <Touchable
+          style={styles.option}
+          background={Touchable.Ripple('#ccc', false)}
+          onPress={this._handlePressSettings}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={styles.optionIconContainer}>
+              <Ionicons name="ios-settings" size={22} />
+            </View>
+            <View style={styles.optionTextContainer}>
+              <Text style={styles.optionText}>
+                App Setings
+              </Text>
+            </View>
+          </View>
+        </Touchable>
+
+        <Text style={styles.optionsTitleText}>
           Resources
         </Text>
 
@@ -105,6 +125,11 @@ export default class MoreScreen extends React.Component {
   _handlePressContact = () => {
     WebBrowser.openBrowserAsync('https://sravastiabbey.org');
   };
+
+  _handlePressSettings = () => {
+    const {navigate} = this.props.navigation;
+    navigate('Settings')
+  }
 }
 
 const styles = StyleSheet.create({

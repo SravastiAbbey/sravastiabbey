@@ -13,7 +13,7 @@ const sounds = {
     asset: require('./assets/audio/Dedication_Prayer_for_Med_on_the_Buddha_2019-07-30.mp3'),
     id: 3
   },
-  sbMantra3: {
+  meaningOfTheMantra: {
     asset: require('./assets/audio/SB-Mantra-3.mp3'),
     id: 3
   },
@@ -28,7 +28,6 @@ export default async function playSoundAndOrStop(key) {
 
   if (!sound) {
     throw new Error("Failed to find sound for key " + key);
-    return;
   }
 
   if (currentlyPlayingSoundObject !== null) {

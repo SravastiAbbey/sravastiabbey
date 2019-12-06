@@ -11,12 +11,13 @@ export default styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#fff',
+    padding: 10
   },
   bodyText: {
     padding: 10,
     fontSize: 16,
     color: Colors.tintColor,
-    fontFamily: 'open-sans-regular',
+    fontFamily: 'open-sans',
   },
   blockQuote: {
     fontSize: 16,
@@ -34,6 +35,7 @@ export default styles = StyleSheet.create({
     fontSize: 22,
     color: Colors.tintColor,
     fontFamily: 'open-sans-bold',
+    textAlign:'center'
   },
   quoteText: {
     padding: 10,

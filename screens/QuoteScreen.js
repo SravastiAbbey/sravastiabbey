@@ -1,6 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import { Image, TouchableWithoutFeedback, StyleSheet, View, Text } from 'react-native';
+import { Image, TouchableWithoutFeedback, StyleSheet, View, Text, ScrollView } from 'react-native';
 import AnimatedTextSwitch from '../components/AnimatedTextSwitch';
 import Colors from '../constants/Colors';
 import { inject, observer } from 'mobx-react';
@@ -26,27 +25,31 @@ export default class QuoteScreen extends React.Component {
   }
   render() {
 
+    // get MobX store for style props
     let store = this.props.observableStore;
 
+    // combined font props from store with global styles
     let quoteTextStyle = StyleSheet.flatten([styles.quoteText, {
-      fontSize: store.quoteFontSize,
-      fontFamily: store.quoteFontFamily,
+      fontSize: store.baseFontSize,
+      fontFamily: store.baseFontFamily,
     }]);
 
-      return (
-        <TouchableWithoutFeedback style={styles.container} onPress={ this.handleClick }>
-          <View style={styles.quoteContainer}>
-            <AnimatedTextSwitch style={quoteTextStyle}>
-              {quotes.quotes[this.state.random].quote}            
-            </AnimatedTextSwitch>
-            <AnimatedTextSwitch style={{...styles.quoteAuthor}}>
-              by {quotes.quotes[this.state.random].author}
-            </AnimatedTextSwitch>
-            <AnimatedTextSwitch style={{...styles.quoteCategory}}>
-              category: {quotes.quotes[this.state.random].category}
-            </AnimatedTextSwitch>
-          </View>
-        </TouchableWithoutFeedback>  
+    return (
+      <ScrollView style={styles.container}>
+        <TouchableWithoutFeedback onPress={ this.handleClick }>
+            <View style={[styles.quoteContainer, {paddingBottom:50}]}>
+              <AnimatedTextSwitch style={quoteTextStyle}>
+                {quotes.quotes[this.state.random].quote}
+              </AnimatedTextSwitch>
+              <AnimatedTextSwitch style={{...styles.quoteAuthor}}>
+                by {quotes.quotes[this.state.random].author}
+              </AnimatedTextSwitch>
+              <AnimatedTextSwitch style={{...styles.quoteCategory}}>
+                category: {quotes.quotes[this.state.random].category}
+              </AnimatedTextSwitch>
+            </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
       );
   }
 
