@@ -4,13 +4,13 @@ import { Button as RNEButton } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import Links from '../constants/Links';
 import Anchor from '../components/Anchor';
-import AudioPlayer from "../AudioPlayer";
+import AudioPlayer, {sounds} from "../AudioPlayer";
 import AnimatedTextSwitch from "../components/AnimatedTextSwitch";
 import { Audio } from 'expo-av';
 import styles from '../styles/main';
 import { inject, observer } from "mobx-react";
 import { Entypo } from '@expo/vector-icons';
-
+import AnimatedSoundPlayerButton from "../components/AnimatedSoundPlayerButton";
 
 class AnimatedSoundButton extends React.Component {
 
@@ -111,61 +111,6 @@ class AnimatedSoundButton extends React.Component {
   }
 }
 
-class AnimatedSoundButton2 extends React.Component {
-
-  state = {
-    fadeValue: new Animated.Value(1.0)
-  };
-
-  _start = () => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.delay(500),
-        Animated.timing(this.state.fadeValue, {
-          toValue: 0.1,
-          duration: 1000,
-          useNativeDriver: true
-        }),
-        Animated.delay(500),
-        Animated.timing(this.state.fadeValue, {
-          toValue: 1.0,
-          duration: 1000,
-          useNativeDriver: true
-        }),
-      ])
-    ).start();
-  };
-
-  render() {
-
-    let {title, action} = this.props;
-
-    return (
-      <Animated.View style={{opacity: this.state.fadeValue}}>
-        <RNEButton
-          onPress={() => this._start()}
-          title={title}
-          type="outline"
-          containerStyle={{
-            width:'90%',
-            marginLeft:'5%',
-            marginTop:20,
-            marginBottom:20
-          }}
-          titleStyle={{
-            marginLeft:10
-          }}
-          icon={<Entypo
-            name={"sound"}
-            size={22}
-            color={'#3f7bd9'}
-          />}
-        />
-      </Animated.View>
-    );
-  }
-}
-
 
 @inject('observableStore')
 @observer
@@ -173,7 +118,6 @@ export default class PracticeScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.playMeditationOnTheBuddha = this.playMeditationOnTheBuddha.bind(this);
   }
 
   static navigationOptions = {
@@ -186,39 +130,6 @@ export default class PracticeScreen extends React.Component {
       />
     ),
   };
-
-  async playMeditationOnTheBuddha() {
-
-    try {
-      await AudioPlayer('meditationOnTheBuddha');
-    }
-    catch (e) {
-      // do something with the error
-    }
-
-  }
-
-  async playTheBuddhasMantra() {
-
-    try {
-      await AudioPlayer('buddhaMantra');
-    }
-    catch (e) {
-      // do something with the error
-    }
-
-  }
-
-  async playTheMeaningOfTheMantra() {
-
-    try {
-      await AudioPlayer('meaningOfTheMantra');
-    }
-    catch (e) {
-      // do something with the error
-    }
-
-  }
 
   render() {
 
@@ -248,9 +159,19 @@ export default class PracticeScreen extends React.Component {
             Meditation on the Buddha
           </Text>
 
-          <AnimatedSoundButton
+          <AnimatedSoundPlayerButton
             title={"Meditation on the Buddha"}
-            action={this.playMeditationOnTheBuddha}
+            sound={sounds.meditationOnTheBuddha}
+          />
+
+          <AnimatedSoundPlayerButton
+            title={"The Buddha's Mantra"}
+            sound={sounds.buddhaMantra}
+          />
+
+          <AnimatedSoundPlayerButton
+            title={"The Meaning of the Mantra"}
+            sound={sounds.meaningOfTheMantra}
           />
 
           <Text style={bodyTextStyle}>
@@ -586,9 +507,9 @@ export default class PracticeScreen extends React.Component {
             stages of the path.
           </Text>
 
-          <AnimatedSoundButton
-            title={"The Buddha's mantra"}
-            action={this.playTheBuddhasMantra}
+          <AnimatedSoundPlayerButton
+            title={"The Buddha's Mantra"}
+            sound={sounds.buddhaMantra}
           />
 
           <View style={blockQuoteContainerStyle}>
@@ -597,9 +518,9 @@ export default class PracticeScreen extends React.Component {
             </Text>
           </View>
 
-          <AnimatedSoundButton
-            title={"Meaning of the mantra"}
-            action={this.playTheMeaningOfTheMantra}
+          <AnimatedSoundPlayerButton
+            title={"The Meaning of the Mantra"}
+            sound={sounds.meaningOfTheMantra}
           />
 
           <Text style={headerTextStyle}>
