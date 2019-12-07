@@ -52,7 +52,7 @@ CheckupStack.navigationOptions = {
 };
 
 const PracticeStack = createStackNavigator({
-  Pricetice: PracticeScreen,
+  Practice: PracticeScreen,
 });
 
 PracticeStack.navigationOptions = {

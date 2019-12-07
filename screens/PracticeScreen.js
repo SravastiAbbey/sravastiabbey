@@ -1,115 +1,12 @@
 import React from 'react';
-import { Image, ScrollView, Text, View, Animated, TouchableOpacity, Platform } from 'react-native';
-import { Button as RNEButton } from 'react-native-elements';
+import { Image, ScrollView, Text, View} from 'react-native';
 import Colors from '../constants/Colors';
 import Links from '../constants/Links';
 import Anchor from '../components/Anchor';
-import AudioPlayer, {sounds} from "../AudioPlayer";
-import AnimatedTextSwitch from "../components/AnimatedTextSwitch";
-import { Audio } from 'expo-av';
+import {sounds} from "../AudioPlayer";
 import styles from '../styles/main';
 import { inject, observer } from "mobx-react";
-import { Entypo } from '@expo/vector-icons';
 import AnimatedSoundPlayerButton from "../components/AnimatedSoundPlayerButton";
-
-class AnimatedSoundButton extends React.Component {
-
-  state = {
-    fadeValue: new Animated.Value(1.0),
-    active: false
-  };
-
-  _start = () => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.delay(500),
-        Animated.timing(this.state.fadeValue, {
-          toValue: 0.0,
-          duration: 1000,
-          useNativeDriver: true
-        }),
-        Animated.delay(500),
-        Animated.timing(this.state.fadeValue, {
-          toValue: 1.0,
-          duration: 1000,
-          useNativeDriver: true
-        }),
-      ])
-    ).start();
-  };
-
-  mainColor = '#3f7bd9';
-
-  _onPress = () => {
-    if (!this.state.active) {
-      this._start()
-    }
-    else {
-      this.state.fadeValue.stopAnimation(() => {
-        this.state.fadeValue.setValue(1.0);
-      });
-    }
-    this.setState({active: !this.state.active});
-    this.props.action();
-  };
-
-  render() {
-
-    let {title, action} = this.props;
-
-    return (
-        <TouchableOpacity
-          onPress={this._onPress}
-          style={{
-            marginTop:20,
-            marginBottom:20,
-            flex:1,
-            flexDirection:'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderColor: this.mainColor,
-            borderRadius: 10,
-            borderWidth: 1,
-            paddingVertical:10,
-            paddingHorizontal:5,
-            width:'90%',
-            marginLeft:'5%'
-          }}
-        >
-          <Animated.View
-            style={{
-              opacity: this.state.fadeValue,
-              transform: [
-                {
-                  scaleX: this.state.fadeValue.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0.7, 1.1]
-                  })
-                },
-                {
-                  scaleY: this.state.fadeValue.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0.7, 1.1]
-                  })
-                }
-              ]
-            }}
-          >
-            <Entypo
-              name={"sound"}
-              size={22}
-              color={this.mainColor}
-            />
-          </Animated.View>
-          <Text style={{
-            marginLeft:10,
-            color: this.mainColor,
-            fontSize: 18
-          }}>{title}</Text>
-        </TouchableOpacity>
-    );
-  }
-}
 
 
 @inject('observableStore')
@@ -144,13 +41,7 @@ export default class PracticeScreen extends React.Component {
       padding: 20*currentFontSize/22
     }];
     let headerTextStyle = [styles.headerText, {fontSize:currentFontSize*1.3}];
-
-    let speakerIcon = <Entypo
-      name={"sound"}
-      size={22}
-      color={'#3f7bd9'}
-    />;
-
+    
     return (
       <ScrollView style={styles.container}>
         <View style={styles.quoteContainer}>
@@ -162,16 +53,7 @@ export default class PracticeScreen extends React.Component {
           <AnimatedSoundPlayerButton
             title={"Meditation on the Buddha"}
             sound={sounds.meditationOnTheBuddha}
-          />
-
-          <AnimatedSoundPlayerButton
-            title={"The Buddha's Mantra"}
-            sound={sounds.buddhaMantra}
-          />
-
-          <AnimatedSoundPlayerButton
-            title={"The Meaning of the Mantra"}
-            sound={sounds.meaningOfTheMantra}
+            description={"Press the button below to hear a guided meditation by Venerable Chodron on the Buddha."}
           />
 
           <Text style={bodyTextStyle}>
@@ -510,6 +392,7 @@ export default class PracticeScreen extends React.Component {
           <AnimatedSoundPlayerButton
             title={"The Buddha's Mantra"}
             sound={sounds.buddhaMantra}
+            description={"Press the button below to hear Venerable Chodron chant the Buddha's mantra."}
           />
 
           <View style={blockQuoteContainerStyle}>
@@ -521,6 +404,7 @@ export default class PracticeScreen extends React.Component {
           <AnimatedSoundPlayerButton
             title={"The Meaning of the Mantra"}
             sound={sounds.meaningOfTheMantra}
+            description={"Press the button below to hear Venerable Chodron explain the meaning of the Buddha's mantra."}
           />
 
           <Text style={headerTextStyle}>

@@ -1,9 +1,8 @@
 import React from "react";
 import { Animated, Text, TouchableOpacity, View } from "react-native";
-import { Entypo, Feather, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import AudioPlayer, {pauseAudio, unpauseAudio, stopAudioAndClear, secondsToFormattedTimeString} from "../AudioPlayer";
 import { inject, observer } from "mobx-react";
-import _ from 'lodash';
 
 const PlayControllers = ({soundState, mainColor, stopAction, pauseAction, unpauseAction}) => {
 
@@ -29,7 +28,7 @@ const PlayControllers = ({soundState, mainColor, stopAction, pauseAction, unpaus
         <Text style={{
           color: mainColor
         }}>
-          Stop
+          Stop & Rewind
         </Text>
       </TouchableOpacity>
       {soundState === 'playing' ?
@@ -75,7 +74,7 @@ const PlayControllers = ({soundState, mainColor, stopAction, pauseAction, unpaus
     </View>
   );
 
-}
+};
 
 @inject('observableStore')
 @observer
@@ -137,13 +136,6 @@ export default class AnimatedSoundPlayerButton extends React.Component {
 
   }
 
-  checkDoubleTap = () => {
-    let delta = new Date().getTime() - this.lastPress;
-    this.lastPress = new Date().getTime();
-    console.log(delta);
-    return delta < 500;
-  };
-
   async stopAudio() {
     this.state.fadeValue.stopAnimation(() => {
       this.setState({fadeValue: new Animated.Value(1.0)})
@@ -167,16 +159,11 @@ export default class AnimatedSoundPlayerButton extends React.Component {
 
   onPress = async () => {
 
-    let doubleTap = this.checkDoubleTap();
     let {soundState} = this.state;
 
     // if stopped, and button pressed to play
     if (soundState === 'stopped') {
       await this.playAudio();
-    }
-    // if double tapped, should stop and rewind
-    else if (doubleTap) {
-      await this.stopAudio();
     }
     // if playing, should pause
     else if (soundState === 'playing') {
@@ -202,12 +189,26 @@ export default class AnimatedSoundPlayerButton extends React.Component {
         flex:1,
         flexDirection:'column',
         alignItems: 'center',
+        marginTop:20
       }}>
+        { this.props.description ?
+          <Text style={{
+            color:this.mainColor,
+            width:'90%',
+            textAlign: 'left',
+            fontFamily: 'open-sans',
+            fontSize: 16,
+            paddingVertical:10,
+          }}>
+            {this.props.description}
+          </Text> : null
+        }
+
         <TouchableOpacity
           onPress={this.onPress}
           style={{
-            marginTop:20,
-            marginBottom:5,
+            marginBottom:20,
+            marginTop:5,
             flex:1,
             flexDirection:'row',
             alignItems: 'center',
@@ -215,7 +216,9 @@ export default class AnimatedSoundPlayerButton extends React.Component {
             paddingVertical:10,
             paddingHorizontal:5,
             width:'90%',
-            marginLeft:'5%'
+            borderWidth: 1,
+            borderColor: this.mainColor,
+            borderRadius: 10
           }}
         >
           <Animated.View
