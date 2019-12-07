@@ -1,4 +1,30 @@
 import { action, observable, computed } from 'mobx';
+import { AsyncStorage } from 'react-native';
+
+const KEY_PREFIX = "@SravastiApp:";
+
+const storeData = async (key, data) => {
+  try {
+    //console.log(`storeData: ${key}: ${data}`)
+    await AsyncStorage.setItem(KEY_PREFIX+key, JSON.stringify(data));
+  } catch (error) {
+    // Error saving data
+    //console.error(error);
+  }
+};
+
+const retrieveData = async (key) => {
+  try {
+    const value = await AsyncStorage.getItem(KEY_PREFIX+key);
+    //console.log(`retrieveData: ${key}: ${value}`)
+    return JSON.parse(value);
+  }
+  catch (error) {
+    // Error retrieving data
+    //console.error(error);
+    return null;
+  }
+};
 
 class ObservableStore {
 
@@ -6,51 +32,56 @@ class ObservableStore {
     small: 14,
     medium: 18,
     large: 22,
-    larger: 26
+    larger: 26,
+    largest: 30
   };
 
   @observable baseFontFamily = 'open-sans';
-  @observable baseFontSize = 22;
+  @observable baseFontSize = 18;
 
-  @action setBaseFontFamily(value) {
+  @action async setBaseFontFamily(value) {
     this.baseFontFamily = value;
+    await storeData('baseFontFamily', value);
   }
 
-  @action setBaseFontSize(value) {
+  @action async setBaseFontSize(value) {
     this.baseFontSize = value;
+    await storeData('baseFontSize', value);
   }
 
   @action setBaseFontSizeByName(fontSizeName) {
     switch(fontSizeName) {
       case 'small':
-        this.setBaseFontSizeSmall();
-        break;
+        return this.setBaseFontSizeSmall();
       case 'medium':
-        this.setBaseFontSizeMedium();
-        break;
+        return this.setBaseFontSizeMedium();
       case 'large':
-        this.setBaseFontSizeLarge();
-        break;
+        return this.setBaseFontSizeLarge();
       case 'larger':
-        this.setBaseFontSizeLarger();
-        break;
+        return this.setBaseFontSizeLarger();
+      case 'largest':
+        return this.setBaseFontSizeLargest();
     }
   }
 
-  @action setBaseFontSizeSmall() {
-    this.baseFontSize = this.fontSizes.small;
+  @action async setBaseFontSizeSmall() {
+    await this.setBaseFontSize(this.fontSizes.small);
   }
 
-  @action setBaseFontSizeMedium() {
-    this.baseFontSize = this.fontSizes.medium;
+  @action async setBaseFontSizeMedium() {
+    await this.setBaseFontSize(this.fontSizes.medium);
   }
 
-  @action setBaseFontSizeLarge() {
-    this.baseFontSize = this.fontSizes.large;
+  @action async setBaseFontSizeLarge() {
+    await this.setBaseFontSize(this.fontSizes.large);
   }
 
-  @action setBaseFontSizeLarger() {
-    this.baseFontSize = this.fontSizes.larger;
+  @action async setBaseFontSizeLarger() {
+    await this.setBaseFontSize(this.fontSizes.larger);
+  }
+
+  @action async setBaseFontSizeLargest() {
+    await this.setBaseFontSize(this.fontSizes.largest);
   }
 
   @computed get boldFont() {
@@ -67,6 +98,22 @@ class ObservableStore {
 
   @computed get lightFont() {
     return this.baseFontFamily + '-light';
+  }
+
+  async setIfNotNull(thisKey, storageKey) {
+    if (!storageKey) storageKey = thisKey;
+    let value = await retrieveData(storageKey);
+    if (value) {
+      console.log(`Setting value from key: this.${thisKey}/${storageKey} = ${value}`);
+      this[thisKey] = value;
+    }
+  }
+
+  async initializeFromStorage() {
+    //await AsyncStorage.removeItem(KEY_PREFIX+'baseFontSize');
+    //await AsyncStorage.removeItem(KEY_PREFIX+'baseFontFamily');
+    await this.setIfNotNull('baseFontSize');
+    await this.setIfNotNull('baseFontFamily');
   }
 
 }

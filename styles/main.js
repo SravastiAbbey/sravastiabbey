@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import Colors from "../constants/Colors";
+import {LightenDarkenColor} from "../Utils";
 
 export default styles = StyleSheet.create({
   container: {
@@ -13,6 +14,13 @@ export default styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 10
   },
+  practiceContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    padding: 10,
+    paddingBottom:50
+  },
   bodyText: {
     padding: 10,
     fontSize: 16,
@@ -22,7 +30,7 @@ export default styles = StyleSheet.create({
   blockQuote: {
     fontSize: 16,
     padding:1,
-    color: Colors.tintColor,
+    color: LightenDarkenColor(Colors.tintColor, 50),
     fontFamily: 'open-sans-italic',
   },
   blockQuoteContainer: {
@@ -35,7 +43,9 @@ export default styles = StyleSheet.create({
     fontSize: 22,
     color: Colors.tintColor,
     fontFamily: 'open-sans-bold',
-    textAlign:'center'
+    textAlign:'center',
+    marginTop:30,
+    marginBottom: 10
   },
   quoteText: {
     padding: 10,

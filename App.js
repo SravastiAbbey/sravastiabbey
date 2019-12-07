@@ -9,9 +9,14 @@ import { Provider } from 'mobx-react';
 import observableStore from './store';
 
 export default class App extends React.Component {
+
   state = {
     isLoadingComplete: false,
   };
+
+  async componentDidMount() {
+    await observableStore.initializeFromStorage();
+  }
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {

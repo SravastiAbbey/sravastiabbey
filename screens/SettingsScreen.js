@@ -18,14 +18,14 @@ export default class MoreScreen extends React.Component {
     ),
   };
 
-  setFontFamily = (newFontFamily) => {
+  setFontFamily = async (newFontFamily) => {
     let store = this.props.observableStore;
-    store.setBaseFontFamily(newFontFamily);
+    await store.setBaseFontFamily(newFontFamily);
   };
 
-  setFontSize = (newSize) => {
+  setFontSize = async (newSize) => {
     let store = this.props.observableStore;
-    store.setBaseFontSizeByName(newSize);
+    await store.setBaseFontSizeByName(newSize);
   };
 
   render() {
@@ -43,7 +43,7 @@ export default class MoreScreen extends React.Component {
         <CheckBox
           title='Caveat'
           checked={currentFontFamily === 'caveat'}
-          onPress={() => this.setFontFamily('caveat')}
+          onPress={async () => await this.setFontFamily('caveat')}
           textStyle={{
             fontFamily: 'caveat',
             fontSize: 22
@@ -54,7 +54,7 @@ export default class MoreScreen extends React.Component {
         <CheckBox
           title='OpenSans'
           checked={currentFontFamily === 'open-sans'}
-          onPress={() => this.setFontFamily('open-sans')}
+          onPress={async () => await this.setFontFamily('open-sans')}
           textStyle={{
             fontFamily: 'open-sans'
           }}
@@ -64,7 +64,7 @@ export default class MoreScreen extends React.Component {
         <CheckBox
           title='Gelasio'
           checked={currentFontFamily === 'gelasio'}
-          onPress={() => this.setFontFamily('gelasio')}
+          onPress={async () => await this.setFontFamily('gelasio')}
           textStyle={{
             fontFamily: 'gelasio'
           }}
@@ -78,7 +78,7 @@ export default class MoreScreen extends React.Component {
         <CheckBox
           title='Small'
           checked={currentFontSize === store.fontSizes.small}
-          onPress={() => this.setFontSize('small')}
+          onPress={async () => await this.setFontSize('small')}
           textStyle={{
             fontFamily: 'open-sans',
             fontSize: store.fontSizes.small
@@ -89,7 +89,7 @@ export default class MoreScreen extends React.Component {
         <CheckBox
           title='Medium'
           checked={currentFontSize === store.fontSizes.medium}
-          onPress={() => this.setFontSize('medium')}
+          onPress={async () => await this.setFontSize('medium')}
           textStyle={{
             fontFamily: 'open-sans',
             fontSize: store.fontSizes.medium
@@ -100,7 +100,7 @@ export default class MoreScreen extends React.Component {
         <CheckBox
           title='Large'
           checked={currentFontSize === store.fontSizes.large}
-          onPress={() => this.setFontSize('large')}
+          onPress={async () => await this.setFontSize('large')}
           textStyle={{
             fontFamily: 'open-sans',
             fontSize: store.fontSizes.large
@@ -111,10 +111,21 @@ export default class MoreScreen extends React.Component {
         <CheckBox
           title='Larger'
           checked={currentFontSize === store.fontSizes.larger}
-          onPress={() => this.setFontSize('larger')}
+          onPress={async () => await this.setFontSize('larger')}
           textStyle={{
             fontFamily: 'open-sans',
             fontSize: store.fontSizes.larger
+          }}
+          containerStyle={styles.option}
+        />
+
+        <CheckBox
+          title='Largest'
+          checked={currentFontSize === store.fontSizes.largest}
+          onPress={async () => await this.setFontSize('largest')}
+          textStyle={{
+            fontFamily: 'open-sans',
+            fontSize: store.fontSizes.largest
           }}
           containerStyle={styles.option}
         />

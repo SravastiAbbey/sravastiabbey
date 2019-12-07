@@ -30,21 +30,36 @@ export default class PracticeScreen extends React.Component {
 
   render() {
 
+    // get the store
     let store = this.props.observableStore;
+    // get the font size and font family
     let currentFontSize = store.baseFontSize;
-    let bodyTextStyle = [styles.bodyText, {fontSize:currentFontSize}];
+    let currentFontFamily = store.baseFontFamily;
+    // is 'caveat' selected? if so, don't use it for the font because there's too much text
+    // for a cursive font
+    let bodyTextFontFamily = currentFontFamily === 'caveat' ? 'open-sans' : currentFontFamily;
+    // make the body test
+    let bodyTextStyle = [styles.bodyText, {
+      fontSize:currentFontSize,
+      fontFamily: bodyTextFontFamily
+    }];
+    // make the block quote text
     let blockQuoteTextStyle = [styles.blockQuote, {
       fontSize:currentFontSize,
       marginBottom:10*currentFontSize/22
     }];
+    // make the block quote container
     let blockQuoteContainerStyle = [styles.blockQuoteContainer, {
       padding: 20*currentFontSize/22
     }];
-    let headerTextStyle = [styles.headerText, {fontSize:currentFontSize*1.3}];
+    // make the header text styles
+    let headerTextStyle = [styles.headerText, {
+      fontSize:currentFontSize*1.3
+    }];
     
     return (
       <ScrollView style={styles.container}>
-        <View style={styles.quoteContainer}>
+        <View style={styles.practiceContainer}>
 
           <Text style={headerTextStyle}>
             Meditation on the Buddha
