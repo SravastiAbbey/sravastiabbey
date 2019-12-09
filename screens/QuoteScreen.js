@@ -4,6 +4,7 @@ import AnimatedTextSwitch from '../components/AnimatedTextSwitch';
 import Colors from '../constants/Colors';
 import { inject, observer } from 'mobx-react';
 import styles from '../styles/main';
+import HeaderBackground from "../components/HeaderBackground";
 const quotes = require('../assets/quotes.json');
 
 @inject('observableStore')
@@ -30,7 +31,7 @@ export default class QuoteScreen extends React.Component {
 
     // combined font props from store with global styles
     let quoteTextStyle = StyleSheet.flatten([styles.quoteText, {
-      fontSize: store.baseFontSize,
+      fontSize: store.adjustedFontSize,
       fontFamily: store.baseFontFamily,
     }]);
 
@@ -57,10 +58,6 @@ export default class QuoteScreen extends React.Component {
     title: 'Quote',
     headerTintColor: Colors.tintColor,
     headerTitleStyle :{textAlign: 'center', alignSelf:'center', flex:1},
-    headerBackground: (
-      <Image style={{ flex: 1, width: undefined, height: undefined, resizeMode: 'contain' }} 
-        source={require('../assets/images/header.png')}
-      />
-    ),
+    headerBackground: <HeaderBackground/>
   };
 }

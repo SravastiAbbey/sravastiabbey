@@ -39,6 +39,13 @@ class ObservableStore {
   @observable baseFontFamily = 'open-sans';
   @observable baseFontSize = 18;
 
+  /*
+    Adjust font size for caveat to a larger size because it appears smaller
+   */
+  @computed get adjustedFontSize() {
+    return this.baseFontFamily === 'caveat' ? this.baseFontSize + 6 : this.baseFontSize;
+  }
+
   @action async setBaseFontFamily(value) {
     this.baseFontFamily = value;
     await storeData('baseFontFamily', value);
@@ -49,39 +56,8 @@ class ObservableStore {
     await storeData('baseFontSize', value);
   }
 
-  @action setBaseFontSizeByName(fontSizeName) {
-    switch(fontSizeName) {
-      case 'small':
-        return this.setBaseFontSizeSmall();
-      case 'medium':
-        return this.setBaseFontSizeMedium();
-      case 'large':
-        return this.setBaseFontSizeLarge();
-      case 'larger':
-        return this.setBaseFontSizeLarger();
-      case 'largest':
-        return this.setBaseFontSizeLargest();
-    }
-  }
-
-  @action async setBaseFontSizeSmall() {
-    await this.setBaseFontSize(this.fontSizes.small);
-  }
-
-  @action async setBaseFontSizeMedium() {
-    await this.setBaseFontSize(this.fontSizes.medium);
-  }
-
-  @action async setBaseFontSizeLarge() {
-    await this.setBaseFontSize(this.fontSizes.large);
-  }
-
-  @action async setBaseFontSizeLarger() {
-    await this.setBaseFontSize(this.fontSizes.larger);
-  }
-
-  @action async setBaseFontSizeLargest() {
-    await this.setBaseFontSize(this.fontSizes.largest);
+  @action async setBaseFontSizeByName(fontSizeName) {
+    return await this.setBaseFontSize(this.fontSizes[fontSizeName]);
   }
 
   @computed get boldFont() {

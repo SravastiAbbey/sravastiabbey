@@ -51,6 +51,10 @@ export default styles = StyleSheet.create({
     padding: 10,
     color: Colors.tintColor,
   },
+  explanationText: {
+    padding: 10,
+    color: Colors.gray,
+  },
   quoteAuthor: {
     color: Colors.gray,
     fontSize: 12,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import Colors from '../constants/Colors';
@@ -15,8 +15,26 @@ const MotivationStack = createStackNavigator({
   Motivation: MotivationScreen,
 });
 
+const TabBarLabel = ({ focused, tintColor, line1, line2 }) => {
+  return (
+    <View>
+      <Text style={{
+        fontSize:11,
+        textAlign:'center',
+        color:tintColor
+      }}>{line1}</Text>
+      <Text style={{
+        fontSize:11,
+        textAlign:'center',
+        color:tintColor
+      }}>{line2}</Text>
+    </View>
+  )
+};
+
 MotivationStack.navigationOptions = {
-  tabBarLabel: 'Motivation',
+  //tabBarLabel: 'Daily Motivation',
+  tabBarLabel: (props) => <TabBarLabel {...props} line1="Daily" line2="Motivation"/>,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -30,7 +48,8 @@ const QuoteStack = createStackNavigator({
 });
 
 QuoteStack.navigationOptions = {
-  tabBarLabel: 'Quote',
+  //tabBarLabel: 'Quote',
+  tabBarLabel: (props) => <TabBarLabel {...props} line1="Quote"/>,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -42,7 +61,7 @@ QuoteStack.navigationOptions = {
 const CheckupStack = createStackNavigator({Checkup: CheckupScreen});
 
 CheckupStack.navigationOptions = {
-  tabBarLabel: 'Checkup',
+  tabBarLabel: (props) => <TabBarLabel {...props} line1="Checkup"/>,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -56,7 +75,7 @@ const PracticeStack = createStackNavigator({
 });
 
 PracticeStack.navigationOptions = {
-  tabBarLabel: 'Practice',
+  tabBarLabel: (props) => <TabBarLabel {...props} line1="Practice"/>,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -70,7 +89,7 @@ const MoreStack = createStackNavigator({
   Settings: SettingsScreen
 });
 MoreStack.navigationOptions = {
-  tabBarLabel: 'More',
+  tabBarLabel: (props) => <TabBarLabel {...props} line1="More"/>,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -88,6 +107,9 @@ export default createBottomTabNavigator({
   {
     initialRouteName: 'QuoteStack',
     tabBarOptions: {
-    activeTintColor: Colors.tintColor,
+      activeTintColor: Colors.tintColor,
+      style:{
+        height:70
+      }
   }
 });

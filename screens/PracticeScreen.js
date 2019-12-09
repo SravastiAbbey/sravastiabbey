@@ -6,8 +6,11 @@ import Anchor from '../components/Anchor';
 import {sounds} from "../AudioPlayer";
 import styles from '../styles/main';
 import { inject, observer } from "mobx-react";
+import {Button} from 'react-native-elements';
 import AnimatedSoundPlayerButton from "../components/AnimatedSoundPlayerButton";
-
+import HeaderBackground from "../components/HeaderBackground";
+import {LightenDarkenColor} from '../Utils'
+import { Linking } from 'expo';
 
 @inject('observableStore')
 @observer
@@ -21,11 +24,7 @@ export default class PracticeScreen extends React.Component {
     title: 'Practice',
     headerTintColor: Colors.tintColor,
     headerTitleStyle :{textAlign: 'center', alignSelf:'center', flex:1},
-    headerBackground: (
-      <Image style={{ flex: 1, width: undefined, height: undefined, resizeMode: 'contain' }} 
-        source={require('../assets/images/header.png')}
-      />
-    ),
+    headerBackground: <HeaderBackground/>,
   };
 
   render() {
@@ -56,10 +55,49 @@ export default class PracticeScreen extends React.Component {
     let headerTextStyle = [styles.headerText, {
       fontSize:currentFontSize*1.3
     }];
+
+    let buddhaHallHeaderText = [styles.headerText, {
+      fontSize:currentFontSize*1.3,
+      padding:0,
+      margin:0,
+      marginTop:10
+    }];
     
     return (
       <ScrollView style={styles.container}>
         <View style={styles.practiceContainer}>
+
+          <View style={{
+            borderWidth: 1,
+            borderRadius: 10,
+            borderColor: Colors.tintColor,
+            padding: 10,
+            margin:10
+          }}>
+            <Text style={buddhaHallHeaderText}>
+              Buddha Hall Project
+            </Text>
+
+            <Text style={bodyTextStyle}>
+              Sravasti Abbey is building a new Buddha Hall! To create merit and counter obstacles to building,
+              we invite you to recite the Shakyamuni Buddha mantra—<Text style={{fontFamily: 'open-sans-italic'}}>om mune mune maha muneya soha</Text>
+              —as many times as you can.</Text>
+            <Text style={bodyTextStyle}>We'll continue the mantra recitations until the hall is finished.</Text>
+
+            <Button
+                title={"Report your mantra recitations!"}
+                onPress={() => {
+                  Linking.openURL(Links.reportBuddhaMantraRecitations);
+                }}
+                buttonStyle={{
+                  backgroundColor: LightenDarkenColor(Colors.tintColor, 30),
+                  opacity:0.7
+                }}
+                containerStyle={{
+                  margin:10
+                }}
+              />
+          </View>
 
           <Text style={headerTextStyle}>
             Meditation on the Buddha
@@ -110,7 +148,7 @@ export default class PracticeScreen extends React.Component {
             you. All of you are looking at the Buddha for guidance.
           </Text>
           <Text style={headerTextStyle}>
-            Refuge and Bodhichitta
+            Refuge and Bodhicitta
           </Text>
           <Text style={bodyTextStyle}>
             To cultivate a sense of refuge, first think of the dangers of cyclic existence by remembering

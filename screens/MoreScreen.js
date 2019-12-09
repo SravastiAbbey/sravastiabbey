@@ -5,6 +5,26 @@ import { Ionicons } from '@expo/vector-icons';
 import Touchable from 'react-native-platform-touchable';
 import Colors from '../constants/Colors';
 
+const SettingsItem = ({iconName, title, onPress}) => {
+  return (
+    <Touchable
+      style={styles.option}
+      background={Touchable.Ripple('#ccc', false)}
+      onPress={onPress}>
+      <View style={{ flexDirection: 'row' }}>
+        <View style={styles.optionIconContainer}>
+          <Ionicons name={iconName} size={22} />
+        </View>
+        <View style={styles.optionTextContainer}>
+          <Text style={styles.optionText}>
+            {title}
+          </Text>
+        </View>
+      </View>
+    </Touchable>
+  )
+}
+
 export default class MoreScreen extends React.Component {
   static navigationOptions = {
     title: 'More',
@@ -24,89 +44,46 @@ export default class MoreScreen extends React.Component {
           Settings
         </Text>
 
-        <Touchable
-          style={styles.option}
-          background={Touchable.Ripple('#ccc', false)}
-          onPress={this._handlePressSettings}>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={styles.optionIconContainer}>
-              <Ionicons name="ios-settings" size={22} />
-            </View>
-            <View style={styles.optionTextContainer}>
-              <Text style={styles.optionText}>
-                App Setings
-              </Text>
-            </View>
-          </View>
-        </Touchable>
+        <SettingsItem
+          onPress={this._handlePressSettings}
+          title="App Setings"
+          iconName="ios-settings"
+        />
 
         <Text style={styles.optionsTitleText}>
           Resources
         </Text>
 
-        <Touchable
-          style={styles.option}
-          background={Touchable.Ripple('#ccc', false)}
-          onPress={this._handlePressAbout}>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={styles.optionIconContainer}>
-            <Ionicons name="ios-information-circle" size={22} />
-            </View>
-            <View style={styles.optionTextContainer}>
-              <Text style={styles.optionText}>
-                About
-              </Text>
-            </View>
-          </View>
-        </Touchable>
+        <SettingsItem
+          onPress={this._handlePressAbout}
+          title="About"
+          iconName="ios-information-circle"
+        />
 
-        <Touchable
-          background={Touchable.Ripple('#ccc', false)}
-          style={styles.option}
-          onPress={this._handlePressStudy}>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={styles.optionIconContainer}>
-              <Ionicons name="ios-folder-open" size={22} />
-            </View>
-            <View style={styles.optionTextContainer}>
-              <Text style={styles.optionText}>
-                Study
-              </Text>
-            </View>
-          </View>
-        </Touchable>
+        <SettingsItem
+          onPress={this._handleBuddhaHall}
+          title="Buddha Hall Project"
+          iconName="ios-information-circle"
+        />
 
-        <Touchable
-          style={styles.option}
-          background={Touchable.Ripple('#ccc', false)}
-          onPress={this._handlePressBook}>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={styles.optionIconContainer}>
-              <Ionicons name="ios-book" size={22} />
-            </View>
-            <View style={styles.optionTextContainer}>
-              <Text style={styles.optionText}>
-                Free Distribution Books
-              </Text>
-            </View>
-          </View>
-        </Touchable>
+        <SettingsItem
+          onPress={this._handlePressStudy}
+          title="Study"
+          iconName="ios-folder-open"
+        />
 
-        <Touchable
-          style={styles.option}
-          background={Touchable.Ripple('#ccc', false)}
-          onPress={this._handlePressContact}>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={styles.optionIconContainer}>
-              <Ionicons name="ios-chatboxes" size={22} />
-            </View>
-            <View style={styles.optionTextContainer}>
-              <Text style={styles.optionText}>
-                Contact Sravasti Abbey
-              </Text>
-            </View>
-          </View>
-        </Touchable>
+        <SettingsItem
+          onPress={this._handlePressBook}
+          title="Free Distribution Books"
+          iconName="ios-book"
+        />
+
+        <SettingsItem
+          onPress={this._handlePressContact}
+          title="Contact Sravasti Abbey"
+          iconName="ios-chatboxes"
+        />
+
       </View>
     );
   }
@@ -124,6 +101,10 @@ export default class MoreScreen extends React.Component {
   };
   _handlePressContact = () => {
     WebBrowser.openBrowserAsync('https://sravastiabbey.org');
+  };
+
+  _handleBuddhaHall = () => {
+    WebBrowser.openBrowserAsync('https://sravastiabbey.org/giving/build-buddha-hall/');
   };
 
   _handlePressSettings = () => {
