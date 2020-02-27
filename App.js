@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading} from 'expo';
+import * as FileSystem from 'expo-file-system';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -70,6 +71,16 @@ export default class App extends React.Component {
         'gelasio-semibold': require('./assets/fonts/Gelasio-SemiBold.ttf'),
         'gelasio-italic': require('./assets/fonts/Gelasio-Italic.ttf'),
       }),
+      // load in db
+      FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}SQLite`, {intermediates:true}).then(result => {
+        console.log(`${FileSystem.documentDirectory}SQLite/quotes-new.db`);
+        FileSystem.downloadAsync(
+            Asset.fromModule(require('./assets/quotes-new.db')).uri,
+            `${FileSystem.documentDirectory}SQLite/quotes-new.db`
+        ).then(result => {
+          console.log(result);
+        })
+      })
     ]);
   };
 

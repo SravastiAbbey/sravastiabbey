@@ -67,38 +67,6 @@ export default class PracticeScreen extends React.Component {
       <ScrollView style={styles.container}>
         <View style={styles.practiceContainer}>
 
-          <View style={{
-            borderWidth: 1,
-            borderRadius: 10,
-            borderColor: Colors.tintColor,
-            padding: 10,
-            margin:10
-          }}>
-            <Text style={buddhaHallHeaderText}>
-              Buddha Hall Project
-            </Text>
-
-            <Text style={bodyTextStyle}>
-              Sravasti Abbey is building a new Buddha Hall! To create merit and counter obstacles to building,
-              we invite you to recite the Shakyamuni Buddha mantra—<Text style={{fontFamily: 'open-sans-italic'}}>om mune mune maha muneya soha</Text>
-              —as many times as you can.</Text>
-            <Text style={bodyTextStyle}>We'll continue the mantra recitations until the hall is finished.</Text>
-
-            <Button
-                title={"Report your mantra recitations!"}
-                onPress={() => {
-                  Linking.openURL(Links.reportBuddhaMantraRecitations);
-                }}
-                buttonStyle={{
-                  backgroundColor: LightenDarkenColor(Colors.tintColor, 30),
-                  opacity:0.7
-                }}
-                containerStyle={{
-                  margin:10
-                }}
-              />
-          </View>
-
           <Text style={headerTextStyle}>
             Meditation on the Buddha
           </Text>
@@ -106,7 +74,7 @@ export default class PracticeScreen extends React.Component {
           <AnimatedSoundPlayerButton
             title={"Meditation on the Buddha"}
             sound={sounds.meditationOnTheBuddha}
-            description={"Press the button below to hear a guided meditation by Venerable Chodron on the Buddha."}
+            description={"Guided meditation by Venerable Chodron on the Buddha."}
           />
 
           <Text style={bodyTextStyle}>
@@ -445,7 +413,7 @@ export default class PracticeScreen extends React.Component {
           <AnimatedSoundPlayerButton
             title={"The Buddha's Mantra"}
             sound={sounds.buddhaMantra}
-            description={"Press the button below to hear Venerable Chodron chant the Buddha's mantra."}
+            description={"Hear Venerable Chodron chant the Buddha's mantra."}
           />
 
           <View style={blockQuoteContainerStyle}>
@@ -457,7 +425,7 @@ export default class PracticeScreen extends React.Component {
           <AnimatedSoundPlayerButton
             title={"The Meaning of the Mantra"}
             sound={sounds.meaningOfTheMantra}
-            description={"Press the button below to hear Venerable Chodron explain the meaning of the Buddha's mantra."}
+            description={"Hear Venerable Chodron explain the meaning of the Buddha's mantra."}
           />
 
           <Text style={headerTextStyle}>
@@ -508,6 +476,40 @@ export default class PracticeScreen extends React.Component {
             <Text style={blockQuoteTextStyle}>
               But increase forever more.
             </Text>
+
+            <View style={{
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: Colors.tintColor,
+              padding: 10,
+              margin:10,
+              marginTop:50
+            }}>
+              <Text style={buddhaHallHeaderText}>
+                Buddha Hall Project
+              </Text>
+
+              <Text style={bodyTextStyle}>
+                Sravasti Abbey is building a new Buddha Hall! To create merit and counter obstacles to building,
+                we invite you to recite the Shakyamuni Buddha mantra—<Text style={{fontFamily: 'open-sans-italic'}}>om mune mune maha muneya soha</Text>
+                —as many times as you can.</Text>
+              <Text style={bodyTextStyle}>We'll continue the mantra recitations until the hall is finished.</Text>
+
+              <Button
+                  title={"Report your mantra recitations!"}
+                  onPress={() => {
+                    Linking.openURL(Links.reportBuddhaMantraRecitations);
+                  }}
+                  buttonStyle={{
+                    backgroundColor: LightenDarkenColor(Colors.tintColor, 30),
+                    opacity:0.7
+                  }}
+                  containerStyle={{
+                    margin:10
+                  }}
+              />
+            </View>
+
           </View>
         </View>
       </ScrollView>

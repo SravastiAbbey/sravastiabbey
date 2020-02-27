@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, Text, View } from 'react-native';
+import { StyleSheet, Image, Text, View, Linking } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import { Ionicons } from '@expo/vector-icons';
 import Touchable from 'react-native-platform-touchable';
@@ -66,6 +66,12 @@ export default class MoreScreen extends React.Component {
           iconName="ios-information-circle"
         />
 
+          <SettingsItem
+              onPress={this._handlePressInsightTimerGroup}
+              title="Insight Timer Group"
+              iconName="ios-information-circle"
+          />
+
         <SettingsItem
           onPress={this._handlePressStudy}
           title="Study"
@@ -84,6 +90,12 @@ export default class MoreScreen extends React.Component {
           iconName="ios-chatboxes"
         />
 
+          <SettingsItem
+              onPress={this._handlePressReportBug}
+              title="Report a Problem with the App"
+              iconName="ios-chatboxes"
+          />
+
       </View>
     );
   }
@@ -99,9 +111,14 @@ export default class MoreScreen extends React.Component {
   _handlePressBook = () => {
     WebBrowser.openBrowserAsync('http://thubtenchodron.org/books/for-free-distribution/');
   };
+
   _handlePressContact = () => {
-    WebBrowser.openBrowserAsync('https://sravastiabbey.org');
+      Linking.openURL('mailto:office.sravasti@gmail.com?subject=Mobile+App+Contact');
   };
+
+    _handlePressReportBug = () => {
+        Linking.openURL('mailto:office.sravasti@gmail.com?subject=Mobile+App+Bug+Report');
+    };
 
   _handleBuddhaHall = () => {
     WebBrowser.openBrowserAsync('https://sravastiabbey.org/giving/build-buddha-hall/');
@@ -111,6 +128,12 @@ export default class MoreScreen extends React.Component {
     const {navigate} = this.props.navigation;
     navigate('Settings')
   }
+
+
+    _handlePressInsightTimerGroup = () => {
+        WebBrowser.openBrowserAsync('https://insighttimer.com/sravastimonastics');
+    };
+
 }
 
 const styles = StyleSheet.create({
