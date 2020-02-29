@@ -1,6 +1,5 @@
 import { action, observable, computed } from 'mobx';
 import { AsyncStorage } from 'react-native';
-import quotesManager from './Libraries/Quotes';
 
 const KEY_PREFIX = "@SravastiApp:";
 
@@ -39,11 +38,6 @@ class ObservableStore {
 
   @observable baseFontFamily = 'open-sans';
   @observable baseFontSize = 18;
-  @observable quotes = observable([]);
-
-  @action setQuotes(newQuotes) {
-    this.quotes = observable(newQuotes);
-  }
 
   /*
     Adjust font size for caveat to a larger size because it appears smaller
@@ -96,8 +90,6 @@ class ObservableStore {
     //await AsyncStorage.removeItem(KEY_PREFIX+'baseFontFamily');
     await this.setIfNotNull('baseFontSize');
     await this.setIfNotNull('baseFontFamily');
-    await quotesManager.initialize();
-    this.setQuotes(quotesManager.data);
   }
 
 }

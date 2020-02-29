@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import AppNavigator from './navigation/AppNavigator';
 import { Provider } from 'mobx-react';
 import observableStore from './store';
+import {SQLite} from 'expo-sqlite';
 
 export default class App extends React.Component {
 
@@ -37,6 +38,87 @@ export default class App extends React.Component {
           </Provider>
         </View>
       );
+    }
+  }
+
+  async doesFavoritesColumnExist(db) {
+    return new Promise((resolve, reject) => {
+      db.transaction(tx =>
+          tx.executeSql(
+              "PRAGMA table_info('quotes-new');",
+              [],
+              (_, result) => {
+                console.log(result);
+                if (result.rows._array.find(obj => obj.name === "favorite")) {
+                  console.log('Favorites column exists');
+                  resolve(true);
+                }
+                else {
+                  console.log('Favorites column does not exist');
+                  resolve(false);
+                }
+
+              },
+              (_, error) => {
+                console.log('Error creating favorites column');
+                reject(error)
+              }
+          )
+      );
+    });
+  }
+
+  async createFavoritesColumn(db) {
+    return new Promise((resolve, reject) => {
+      db.transaction(tx =>
+          tx.executeSql(
+              "ALTER TABLE 'quotes-new' ADD favorite INTEGER",
+              [],
+              (_, result) => {
+                console.log('Favorites column created');
+                resolve(result)
+              },
+              (_, error) => {
+                console.log('Error creating favorites column');
+                reject(error)
+              }
+          )
+      );
+    });
+  }
+
+  /*
+   The SQLite file has to be copied from the assets to the app document directory
+   on the phone before it can be used. But we only want to do that once, when the
+   app is initially installed so that we don't overwrite user favorites, which are
+   stored in the favorites column. The favorites column is added to the SQLite
+   database after it is copied below.
+   */
+  async copySqliteFile() {
+    let destinationDirectory = `${FileSystem.documentDirectory}SQLite`;
+    let destinationFile = `${destinationDirectory}/quotes-new.db`;
+    console.log("Destination file = " + destinationFile);
+    let checkIfExists = await FileSystem.getInfoAsync(destinationFile);
+    console.log(checkIfExists);
+    if (checkIfExists.exists) return;
+    let result = await FileSystem.makeDirectoryAsync(destinationDirectory, {intermediates:true});
+    console.log(result);
+    result = await FileSystem.downloadAsync( Asset.fromModule(require('./assets/quotes-new.db')).uri, destinationFile);
+    console.log(result);
+    let db = await SQLite.openDatabase("quotes-new.db");
+    try {
+      let favColExists = await this.doesFavoritesColumnExist(db);
+      if (!favColExists) {
+        console.log("Creating favorite column...");
+        result = await this.createFavoritesColumn(db);
+        console.log(result);
+      }
+      else {
+        console.log("Not creating favorite column...");
+      }
+    }
+    catch (error) {
+      console.log(error.message);
     }
   }
 
@@ -71,16 +153,7 @@ export default class App extends React.Component {
         'gelasio-semibold': require('./assets/fonts/Gelasio-SemiBold.ttf'),
         'gelasio-italic': require('./assets/fonts/Gelasio-Italic.ttf'),
       }),
-      // load in db
-      FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}SQLite`, {intermediates:true}).then(result => {
-        console.log(`${FileSystem.documentDirectory}SQLite/quotes-new.db`);
-        FileSystem.downloadAsync(
-            Asset.fromModule(require('./assets/quotes-new.db')).uri,
-            `${FileSystem.documentDirectory}SQLite/quotes-new.db`
-        ).then(result => {
-          console.log(result);
-        })
-      })
+      this.copySqliteFile()
     ]);
   };
 

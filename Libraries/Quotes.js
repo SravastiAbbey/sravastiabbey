@@ -3,15 +3,15 @@ import {SQLite} from 'expo-sqlite';
 class Quotes {
 
     db = null;
-    data =[];
+    data = [];
 
     async initialize() {
         this.db = await SQLite.openDatabase("quotes-new.db");
         if (!this.db) throw new Error("Failed to open database");
         try {
             let result = await this.getAllQuotes();
-            console.log(result);
-            this.data = result.rows.array;
+            this.data = result.rows._array;
+            console.log("Num quotes = " + this.data.length);
         }
         catch (error) {
             console.error(error);
