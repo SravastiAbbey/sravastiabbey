@@ -1,4 +1,4 @@
-import {SQLite} from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite';
 
 class Quotes {
 
@@ -52,23 +52,42 @@ class Quotes {
     }
 
     async setIsFavorite(id, isFavorite) {
-        let value = isFavorite ? 1 : 0;
-        return new Promise((resolve, reject) => {
-            this.db.transaction(tx =>
-                tx.executeSql(
-                    `UPDATE quotes SET favorite = ${value} WHERE id = ${id};`,
-                    [],
-                    (_, result) => {
-                        console.log(`Finished setting favorite id = ${id}, value = ${value}`);
-                        resolve(result)
-                    },
-                    (_, error) => {
-                        console.log(`Error setting favorite id = ${id}, value = ${value}`);
-                        reject(error)
-                    }
-                )
-            );
-        });
+        if (isFavorite) {
+            return new Promise((resolve, reject) => {
+                this.db.transaction(tx =>
+                    tx.executeSql(
+                        `INSERT OR REPLACE INTO favorites(quote_id) VALUES (${id});`,
+                        [],
+                        (_, result) => {
+                            console.log(`Finished setting favorite id = ${id}`);
+                            resolve(result)
+                        },
+                        (_, error) => {
+                            console.log(`Error setting favorite id = ${id}`);
+                            reject(error)
+                        }
+                    )
+                );
+            });
+        }
+        else {
+            return new Promise((resolve, reject) => {
+                this.db.transaction(tx =>
+                    tx.executeSql(
+                        `DELETE FROM favorites where quote_id = ${id};`,
+                        [],
+                        (_, result) => {
+                            console.log(`Finished setting favorite id = ${id}`);
+                            resolve(result)
+                        },
+                        (_, error) => {
+                            console.log(`Error setting favorite id = ${id}`);
+                            reject(error)
+                        }
+                    )
+                );
+            });
+        }
     }
 
 }

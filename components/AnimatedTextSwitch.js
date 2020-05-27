@@ -19,34 +19,41 @@ class AnimatedTextSwitch extends React.Component {
     };
   }
 
-  componentWillReceiveProps(newProps) {
-    const newText = newProps.children;
-    if (newText !== this.state.previousText ||
-        this.state.textColor !== newProps.style.color
-    ) {
-      Animated.timing(
-        this.state.textOpacity,
-        {
-          toValue: 0,
-          duration: 400,
-          easing: Easing.in(Easing.sin),
-        },
-      ).start(() => {
-        this.setState({
-          previousText: newText,
-          textColor: newProps.style.color,
-        }, () => {
+  componentDidUpdate(prevProps, prevState, snapshot) {
+
+      const newText = this.props.children;
+      const oldText = prevProps.children;
+
+      const oldColor = this.state.textColor;
+      const newColor = this.props.textColor;
+
+      if (newText !== oldText || newColor !== oldColor) {
+
           Animated.timing(
-            this.state.textOpacity,
-            {
-              toValue: 1,
-              duration: 400,
-              easing: Easing.in(Easing.sin),
-            },
-          ).start();
-        });
-      });
-    }
+              this.state.textOpacity,
+              {
+                  toValue: 0,
+                  duration: 400,
+                  easing: Easing.in(Easing.sin),
+              },
+          ).start(() => {
+              this.setState({
+                  previousText: newText,
+                  textColor: newColor,
+              }, () => {
+                  Animated.timing(
+                      this.state.textOpacity,
+                      {
+                          toValue: 1,
+                          duration: 400,
+                          easing: Easing.in(Easing.sin),
+                      },
+                  ).start();
+              });
+          });
+
+      }
+
   }
 
   render() {

@@ -62,10 +62,9 @@ class AnimatedHeart extends Component {
         };
     }
 
-    componentWillReceiveProps(newProps) {
-        const newQuoteId = newProps.quoteId;
-        console.log(newProps);
-        if (newQuoteId !== this.state.previousQuoteId) {
+    componentDidUpdate(prevProps) {
+        if (this.props.quoteId !== prevProps.quoteId) {
+            console.log(this.props);
             Animated.timing(
                 this.state.opacity,
                 {
@@ -74,7 +73,7 @@ class AnimatedHeart extends Component {
                     easing: Easing.in(Easing.sin),
                 },
             ).start(() => {
-                this.setState({isFavorite:newProps.isFavorite, previousQuoteId:newQuoteId}, () => {
+                this.setState({isFavorite:this.props.isFavorite, previousQuoteId:this.props.quoteId}, () => {
                     Animated.timing(
                         this.state.opacity,
                         {
@@ -86,8 +85,8 @@ class AnimatedHeart extends Component {
                 });
             });
         }
-        else if (this.state.isFavorite !== newProps.isFavorite) {
-            this.setState({isFavorite:newProps.isFavorite});
+        else if (this.state.isFavorite !== this.props.isFavorite) {
+            this.setState({isFavorite:this.props.isFavorite});
         }
     }
 
