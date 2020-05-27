@@ -10,6 +10,12 @@ import { Provider } from 'mobx-react';
 import observableStore from './store';
 import {SQLite} from 'expo-sqlite';
 
+// imported SQLite file, converted from csv
+const INPUT_SQLITE_FILE='quotes-new.db';
+
+// can be used to force app to reload database
+const forceReloadData = true;
+
 export default class App extends React.Component {
 
   state = {
@@ -41,26 +47,18 @@ export default class App extends React.Component {
     }
   }
 
-  async doesFavoritesColumnExist(db) {
+  async createTable(db) {
     return new Promise((resolve, reject) => {
       db.transaction(tx =>
           tx.executeSql(
-              "PRAGMA table_info('quotes-new');",
+              SQL_QUERY_CREATE_TABLE,
               [],
               (_, result) => {
-                console.log(result);
-                if (result.rows._array.find(obj => obj.name === "favorite")) {
-                  console.log('Favorites column exists');
-                  resolve(true);
-                }
-                else {
-                  console.log('Favorites column does not exist');
-                  resolve(false);
-                }
-
+                console.log('Table created');
+                resolve(result)
               },
               (_, error) => {
-                console.log('Error creating favorites column');
+                console.log('Error creating table');
                 reject(error)
               }
           )
@@ -68,18 +66,37 @@ export default class App extends React.Component {
     });
   }
 
-  async createFavoritesColumn(db) {
+  async dropTable(db) {
     return new Promise((resolve, reject) => {
       db.transaction(tx =>
           tx.executeSql(
-              "ALTER TABLE 'quotes-new' ADD favorite INTEGER",
+              SQL_QUERY_DROP_TABLE,
               [],
               (_, result) => {
-                console.log('Favorites column created');
+                console.log('Table dropped');
                 resolve(result)
               },
               (_, error) => {
-                console.log('Error creating favorites column');
+                console.log('Error dropping table');
+                reject(error)
+              }
+          )
+      );
+    });
+  }
+
+  async copyTableData(db) {
+    return new Promise((resolve, reject) => {
+      db.transaction(tx =>
+          tx.executeSql(
+              SQL_QUERY_COPY_DATA,
+              [],
+              (_, result) => {
+                console.log('Data copied');
+                resolve(result)
+              },
+              (_, error) => {
+                console.log('Error copying data');
                 reject(error)
               }
           )
@@ -88,38 +105,29 @@ export default class App extends React.Component {
   }
 
   /*
-   The SQLite file has to be copied from the assets to the app document directory
-   on the phone before it can be used. But we only want to do that once, when the
-   app is initially installed so that we don't overwrite user favorites, which are
-   stored in the favorites column. The favorites column is added to the SQLite
-   database after it is copied below.
+   Check if database file exists in the app document directory. If it does not,
+   copy it from the assets and then create the quotes table (with the favorites
+   and index column) and copy the data over. forceReloadData can be used
+   to force a reload of quotes from the sqlite file.
    */
   async copySqliteFile() {
+    // destination file and destination directory
     let destinationDirectory = `${FileSystem.documentDirectory}SQLite`;
     let destinationFile = `${destinationDirectory}/quotes-new.db`;
     console.log("Destination file = " + destinationFile);
+    // does destination database file exist?
     let checkIfExists = await FileSystem.getInfoAsync(destinationFile);
-    console.log(checkIfExists);
-    if (checkIfExists.exists) return;
+    console.log("Checking if destination file exists.", checkIfExists);
+    // if destination file exists, abort
+    if (checkIfExists.exists && !forceReloadData) return;
+    // if not, lets make the /SQLite directory
+    console.log("Making destination directory")
     let result = await FileSystem.makeDirectoryAsync(destinationDirectory, {intermediates:true});
     console.log(result);
-    result = await FileSystem.downloadAsync( Asset.fromModule(require('./assets/quotes-new.db')).uri, destinationFile);
+    // copy the database file from the assets into the documents directory
+    console.log("Copying file in assets to app directory")
+    result = await FileSystem.downloadAsync( Asset.fromModule(require('./assets/'+INPUT_SQLITE_FILE)).uri, destinationFile);
     console.log(result);
-    let db = await SQLite.openDatabase("quotes-new.db");
-    try {
-      let favColExists = await this.doesFavoritesColumnExist(db);
-      if (!favColExists) {
-        console.log("Creating favorite column...");
-        result = await this.createFavoritesColumn(db);
-        console.log(result);
-      }
-      else {
-        console.log("Not creating favorite column...");
-      }
-    }
-    catch (error) {
-      console.log(error.message);
-    }
   }
 
   _loadResourcesAsync = async () => {
