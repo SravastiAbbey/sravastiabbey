@@ -28,9 +28,11 @@ export default class QuoteScreen extends React.Component {
   }
 
   async componentDidMount() {
-    await quotesManager.initialize();
+    await quotesManager.initializeAllQuotes();
     this.quotes = quotesManager.data;
-    this.nextQuote();
+    if (this.quotes && this.quotes.length > 0) {
+        this.nextQuote();
+    }
   }
 
   nextQuote() {
@@ -48,30 +50,56 @@ export default class QuoteScreen extends React.Component {
 
   render() {
 
-    if (this.quotes == null) return null;
+      // get MobX store for style props
+      let store = this.props.observableStore;
+
+      // combined font props from store with global styles
+      let quoteTextStyle = StyleSheet.flatten([styles.quoteText, {
+          fontSize: store.adjustedFontSize,
+          fontFamily: store.baseFontFamily,
+          padding: 20,
+          paddingTop: 0
+      }]);
+
+      let pullQuoteTextStyle = StyleSheet.flatten([styles.quoteText, {
+          fontSize: store.adjustedFontSize*1.3,
+          fontFamily: store.baseFontFamily,
+          fontStyle: 'italic',
+          textAlign: "center",
+          marginBottom: 20,
+          padding: 20,
+          paddingTop:10
+      }]);
+
+    if (this.quotes == null) {
+        return (
+            <ScrollView style={styles.container}>
+                <TouchableWithoutFeedback>
+                    <View style={[styles.quoteContainer, {paddingBottom:50}]}>
+                        <AnimatedTextSwitch style={pullQuoteTextStyle}>
+                            Error loading quotes.
+                        </AnimatedTextSwitch>
+                    </View>
+                </TouchableWithoutFeedback>
+            </ScrollView>
+        );
+    }
+
+    if (this.quotes.length === 0) {
+        return (
+            <ScrollView style={styles.container}>
+                <TouchableWithoutFeedback>
+                    <View style={[styles.quoteContainer, {paddingBottom:50}]}>
+                        <AnimatedTextSwitch style={pullQuoteTextStyle}>
+                            No quotes found.
+                        </AnimatedTextSwitch>
+                    </View>
+                </TouchableWithoutFeedback>
+            </ScrollView>
+        );
+    }
 
     console.log("Num quotes to render = " + this.quotes.length);
-
-    // get MobX store for style props
-    let store = this.props.observableStore;
-
-    // combined font props from store with global styles
-    let quoteTextStyle = StyleSheet.flatten([styles.quoteText, {
-      fontSize: store.adjustedFontSize,
-      fontFamily: store.baseFontFamily,
-      padding: 20,
-      paddingTop: 0
-    }]);
-
-    let pullQuoteTextStyle = StyleSheet.flatten([styles.quoteText, {
-      fontSize: store.adjustedFontSize*1.3,
-      fontFamily: store.baseFontFamily,
-      fontStyle: 'italic',
-      textAlign: "center",
-      marginBottom: 20,
-      padding: 20,
-        paddingTop:10
-    }]);
 
     let quote = this.state.quote;
 

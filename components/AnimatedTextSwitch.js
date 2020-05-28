@@ -25,7 +25,7 @@ class AnimatedTextSwitch extends React.Component {
       const oldText = prevProps.children;
 
       const oldColor = this.state.textColor;
-      const newColor = this.props.textColor;
+      const newColor = this.props.style.color;
 
       if (newText !== oldText || newColor !== oldColor) {
 

@@ -4,15 +4,13 @@
     "description": "A Sravasti Aabbey App.",
     "slug": "sravasti-abbey",
     "privacy": "public",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "sdkVersion": "34.0.0",
+    "platforms": ["ios", "android"],
     "version": "0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/splash2.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

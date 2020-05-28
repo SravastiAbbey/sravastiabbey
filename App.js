@@ -8,13 +8,13 @@ import { Ionicons } from '@expo/vector-icons';
 import AppNavigator from './navigation/AppNavigator';
 import { Provider } from 'mobx-react';
 import observableStore from './store';
-import {SQLite} from 'expo-sqlite';
+import sql from './sql'
 
 // imported SQLite file, converted from csv
 const INPUT_SQLITE_FILE='quotes-new.db';
 
 // can be used to force app to reload database
-const forceReloadData = true;
+const forceReloadData = false;
 
 export default class App extends React.Component {
 
@@ -103,6 +103,25 @@ export default class App extends React.Component {
       );
     });
   }
+  async logTableInfo(db, tableName) {
+    return new Promise((resolve, reject) => {
+      db.transaction(tx => {
+        console.log("Table info for " + tableName);
+        tx.executeSql(
+            `PRAGMA table_info('${tableName}');`,
+            [],
+            (_, result) => {
+              console.log(result);
+              resolve(result)
+            },
+            (_, error) => {
+              console.log('Error copying data');
+              reject(error)
+            }
+        )
+      });
+    });
+  }
 
   /*
    Check if database file exists in the app document directory. If it does not,
@@ -113,21 +132,34 @@ export default class App extends React.Component {
   async copySqliteFile() {
     // destination file and destination directory
     let destinationDirectory = `${FileSystem.documentDirectory}SQLite`;
-    let destinationFile = `${destinationDirectory}/quotes-new.db`;
+    let destinationFile = `${destinationDirectory}/${sql.databaseName}`;
     console.log("Destination file = " + destinationFile);
+    if (forceReloadData) {
+      console.log("Deleting to force reload")
+      await FileSystem.deleteAsync(destinationFile);
+      let db = await sql.db();
+      db._db.close();
+    }
     // does destination database file exist?
     let checkIfExists = await FileSystem.getInfoAsync(destinationFile);
     console.log("Checking if destination file exists.", checkIfExists);
     // if destination file exists, abort
-    if (checkIfExists.exists && !forceReloadData) return;
+    if (checkIfExists.exists) return;
     // if not, lets make the /SQLite directory
-    console.log("Making destination directory")
-    let result = await FileSystem.makeDirectoryAsync(destinationDirectory, {intermediates:true});
-    console.log(result);
+    let checkIfDirectoryExists = await FileSystem.getInfoAsync(destinationDirectory);
+    console.log("Checking if destination directory exists.", checkIfDirectoryExists);
+    if (!checkIfDirectoryExists) {
+      console.log("Creating destination directory: " + destinationDirectory);
+      let result = await FileSystem.makeDirectoryAsync(destinationDirectory, {intermediates:true});
+      console.log(result);
+    }
     // copy the database file from the assets into the documents directory
     console.log("Copying file in assets to app directory")
     result = await FileSystem.downloadAsync( Asset.fromModule(require('./assets/'+INPUT_SQLITE_FILE)).uri, destinationFile);
     console.log(result);
+    let db = await sql.db();
+    await this.logTableInfo(db, 'favorites');
+    await this.logTableInfo(db, 'quotes');
   }
 
   _loadResourcesAsync = async () => {

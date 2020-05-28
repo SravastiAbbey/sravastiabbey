@@ -6,10 +6,11 @@ import Colors from '../constants/Colors';
 import TabBarIcon from '../components/TabBarIcon';
 import MotivationScreen from '../screens/MotivationScreen';
 import QuoteScreen from '../screens/QuoteScreen';
-import CheckupScreen from '../screens/CheckupScreen';
 import PracticeScreen from '../screens/PracticeScreen';
 import MoreScreen from '../screens/MoreScreen';
 import SettingsScreen from "../screens/SettingsScreen";
+import FavoritesScreen from '../screens/FavoritesScreen';
+
 
 const MotivationStack = createStackNavigator({
   Motivation: MotivationScreen,
@@ -26,7 +27,8 @@ const TabBarLabel = ({ focused, tintColor, line1, line2 }) => {
       <Text style={{
         fontSize:11,
         textAlign:'center',
-        color:tintColor
+        color:tintColor,
+        paddingBottom: 5
       }}>{line2}</Text>
     </View>
   )
@@ -58,15 +60,17 @@ QuoteStack.navigationOptions = {
   ),
 };
 
-const CheckupStack = createStackNavigator({Checkup: CheckupScreen});
+const FavoritesStack = createStackNavigator({
+  Quote: FavoritesScreen,
+});
 
-CheckupStack.navigationOptions = {
-  tabBarLabel: (props) => <TabBarLabel {...props} line1="Checkup"/>,
+FavoritesStack.navigationOptions = {
+  tabBarLabel: (props) => <TabBarLabel {...props} line1="Favorites"/>,
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `list${focused ? '_red' : ''}` : 'list'}
-    />
+      <TabBarIcon
+          focused={focused}
+          name={Platform.OS === 'ios' ? `heart${focused ? '_red' : ''}` : 'heart'}
+      />
   ),
 };
 
@@ -101,9 +105,10 @@ MoreStack.navigationOptions = {
 export default createBottomTabNavigator({
     MotivationStack,
     QuoteStack,
-    PracticeStack,
-    MoreStack,
-  }, 
+      FavoritesStack,
+      PracticeStack,
+      MoreStack
+  },
   {
     initialRouteName: 'QuoteStack',
     tabBarOptions: {
