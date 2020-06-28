@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     TouchableWithoutFeedback,
     StyleSheet,
     View,
-    ScrollView,
+    ScrollView, TouchableOpacity, Text,
 } from 'react-native';
 import AnimatedTextSwitch from '../components/AnimatedTextSwitch';
 import Colors from '../constants/Colors';
@@ -13,6 +13,50 @@ import HeaderBackground from "../components/HeaderBackground";
 import quotesManager from '../Libraries/Quotes';
 import Quotes from '../Libraries/Quotes';
 import AnimatedHeart from "../components/AnimatedHeart";
+import {AntDesign} from "@expo/vector-icons";
+import {LightenDarkenColor} from "../Utils";
+
+const Explanation = ({textStyle, iconStyle}) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    if (isOpen) {
+        return (
+            <TouchableOpacity
+                onPress={() => {setIsOpen(false)}}
+                style={{
+                    flex:1,
+                    flexDirection:'row',
+                    padding:10,
+                    paddingTop: 0
+                }}
+            >
+                <Text style={textStyle}>
+                    Tap on the screen for a new random quote to inspire your Dharma practice.
+                </Text>
+            </TouchableOpacity>
+        )
+    }
+    else {
+        return (
+            <TouchableOpacity
+                onPress={() => {setIsOpen(true)}}
+                style={{
+                    flex:1,
+                    flexDirection:'row',
+                    padding:10,
+                }}>
+                <AntDesign
+                    name={"questioncircleo"}
+                    size={22}
+                    color={LightenDarkenColor(Colors.gray, 30)}
+                    style={iconStyle}
+                />
+            </TouchableOpacity>
+        )
+    }
+
+};
+
 
 @inject('observableStore')
 @observer
@@ -71,6 +115,11 @@ export default class QuoteScreen extends React.Component {
           paddingTop:10
       }]);
 
+      let explanationTextStyle = StyleSheet.flatten([styles.explanationText, {
+          fontSize: store.adjustedFontSize,
+          fontFamily: store.baseFontFamily,
+      }]);
+
     if (this.quotes == null) {
         return (
             <ScrollView style={styles.container}>
@@ -113,10 +162,20 @@ export default class QuoteScreen extends React.Component {
 
     return (
       <ScrollView style={styles.container}>
-        <AnimatedHeart quoteId={id} isFavorite={this.state.isFavorite} toggleFavorite={ async (value) => {
-            await Quotes.setIsFavorite(id, value ? 1 : 0);
-            this.setState({isFavorite:value});
-        }}/>
+
+          <View style={{
+              flex:1,
+              flexDirection:"row",
+              justifyContent:"space-between"
+          }}>
+              <Explanation textStyle={explanationTextStyle}/>
+              <AnimatedHeart quoteId={id} isFavorite={this.state.isFavorite} toggleFavorite={ async (value) => {
+                  await Quotes.setIsFavorite(id, value ? 1 : 0);
+                  this.setState({isFavorite:value});
+              }}/>
+          </View>
+
+
         <TouchableWithoutFeedback onPress={ this.handleClick }>
             <View style={[styles.quoteContainer, {paddingBottom:50}]}>
               <AnimatedTextSwitch style={pullQuoteTextStyle}>
@@ -127,9 +186,6 @@ export default class QuoteScreen extends React.Component {
               </AnimatedTextSwitch>
               <AnimatedTextSwitch style={{...styles.quoteAuthor}}>
                 by {author}
-              </AnimatedTextSwitch>
-              <AnimatedTextSwitch style={{...styles.quoteCategory}}>
-                category: {category}
               </AnimatedTextSwitch>
             </View>
         </TouchableWithoutFeedback>

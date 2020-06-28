@@ -17,12 +17,10 @@ const images = {
 export default class TabBarIcon extends React.Component {
   render() {
     switch (this.props.name) {
-      case 'heart':
+      //case 'heart':
       case 'heart_red':
       case 'quote':
       case 'quote_red':
-      case 'list':
-      case 'list_red':
       case 'lotus':
       case 'lotus_red':
         return(      

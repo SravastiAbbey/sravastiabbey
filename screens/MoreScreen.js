@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Image, Text, View, Linking } from 'react-native';
+import {StyleSheet, Image, Text, View, Linking, ScrollView, Dimensions} from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import { Ionicons } from '@expo/vector-icons';
 import Touchable from 'react-native-platform-touchable';
 import Colors from '../constants/Colors';
+import FullWidthImage from "../components/FullWidthImage";
 
 const SettingsItem = ({iconName, title, onPress}) => {
   return (
@@ -25,6 +26,7 @@ const SettingsItem = ({iconName, title, onPress}) => {
   )
 }
 
+
 export default class MoreScreen extends React.Component {
   static navigationOptions = {
     title: 'More',
@@ -38,8 +40,11 @@ export default class MoreScreen extends React.Component {
   };
 
   render() {
+
+    let deviceWidth = Dimensions.get('window').width;
+
     return (
-      <View>
+        <ScrollView style={styles.container}>
         <Text style={styles.optionsTitleText}>
           Settings
         </Text>
@@ -56,19 +61,19 @@ export default class MoreScreen extends React.Component {
 
         <SettingsItem
           onPress={this._handlePressAbout}
-          title="About"
-          iconName="ios-information-circle"
-        />
-
-        <SettingsItem
-          onPress={this._handleBuddhaHall}
-          title="Buddha Hall Project"
+          title="About Sravasti Abbey"
           iconName="ios-information-circle"
         />
 
           <SettingsItem
-              onPress={this._handlePressInsightTimerGroup}
-              title="Insight Timer Group"
+              onPress={this._handlePressInsightTimerGroup_Abbey}
+              title="Meditate with Ven. Chodron"
+              iconName="ios-information-circle"
+          />
+
+          <SettingsItem
+              onPress={this._handlePressInsightTimerGroup_Monastics}
+              title="Meditate with Sravasti Monastic"
               iconName="ios-information-circle"
           />
 
@@ -84,11 +89,19 @@ export default class MoreScreen extends React.Component {
           iconName="ios-book"
         />
 
+
+          <SettingsItem
+              onPress={this._handleBuddhaHall}
+              title="Buddha Hall Project"
+              iconName="ios-information-circle"
+          />
+
         <SettingsItem
           onPress={this._handlePressContact}
           title="Contact Sravasti Abbey"
           iconName="ios-chatboxes"
         />
+
 
           <SettingsItem
               onPress={this._handlePressReportBug}
@@ -96,7 +109,17 @@ export default class MoreScreen extends React.Component {
               iconName="ios-chatboxes"
           />
 
-      </View>
+          <Image
+              style={{
+                width: deviceWidth,
+                height: deviceWidth / 1.5,
+                marginTop: 0,
+                marginBottom: 10
+              }}
+              source={require('../assets/images/sravasti-monastics-smaller.png')}
+          />
+
+        </ScrollView>
     );
   }
 
@@ -130,7 +153,11 @@ export default class MoreScreen extends React.Component {
   }
 
 
-    _handlePressInsightTimerGroup = () => {
+    _handlePressInsightTimerGroup_Abbey = () => {
+        WebBrowser.openBrowserAsync('https://insighttimer.com/sravastiabbey');
+    };
+
+    _handlePressInsightTimerGroup_Monastics = () => {
         WebBrowser.openBrowserAsync('https://insighttimer.com/sravastimonastics');
     };
 

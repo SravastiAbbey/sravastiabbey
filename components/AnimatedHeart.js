@@ -95,6 +95,7 @@ class AnimatedHeart extends Component {
             <Animated.View
                 style={{
                     opacity: this.state.opacity,
+                    minWidth: 30,
                 }}
             >
                 <Heart isFavorite={this.state.isFavorite} toggleFavorite={this.props.toggleFavorite}/>

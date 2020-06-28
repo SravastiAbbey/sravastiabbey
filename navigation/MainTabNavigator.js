@@ -36,11 +36,11 @@ const TabBarLabel = ({ focused, tintColor, line1, line2 }) => {
 
 MotivationStack.navigationOptions = {
   //tabBarLabel: 'Daily Motivation',
-  tabBarLabel: (props) => <TabBarLabel {...props} line1="Daily" line2="Motivation"/>,
+  tabBarLabel: (props) => <TabBarLabel {...props} line1="Morning" line2="Motivation"/>,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={ Platform.OS === 'ios' ? `heart${focused ? '_red' : ''}` : 'heart' }
+      name={ 'md-alarm' }
     />
   ),
 };
@@ -51,11 +51,11 @@ const QuoteStack = createStackNavigator({
 
 QuoteStack.navigationOptions = {
   //tabBarLabel: 'Quote',
-  tabBarLabel: (props) => <TabBarLabel {...props} line1="Quote"/>,
+  tabBarLabel: (props) => <TabBarLabel {...props} line1="Daily" line2="Inspiration"/>,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `quote${focused ? '_red' : ''}` : 'quote'}
+      name={`quote${focused ? '_red' : ''}`}
     />
   ),
 };
@@ -69,7 +69,7 @@ FavoritesStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
       <TabBarIcon
           focused={focused}
-          name={Platform.OS === 'ios' ? `heart${focused ? '_red' : ''}` : 'heart'}
+          name={'md-heart-empty'}
       />
   ),
 };
@@ -83,7 +83,7 @@ PracticeStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `lotus${focused ? '_red' : ''}` : 'lotus'}
+      name={`lotus${focused ? '_red' : ''}`}
     />
   ),
 };
