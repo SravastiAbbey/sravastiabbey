@@ -9,9 +9,11 @@ import AppNavigator from './navigation/AppNavigator';
 import { Provider } from 'mobx-react';
 import observableStore from './store';
 import sql from './sql'
+import config from "./config";
+import quotesManager from "./Libraries/Quotes";
 
 // imported SQLite file, converted from csv
-const INPUT_SQLITE_FILE='quotes-new.db';
+const INPUT_SQLITE_FILE='quotes_0_1.db' //config.databaseName;
 
 // can be used to force app to reload database
 const forceReloadData = false;
@@ -29,80 +31,24 @@ export default class App extends React.Component {
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
-        <AppLoading
-          startAsync={this._loadResourcesAsync}
-          onError={this._handleLoadingError}
-          onFinish={this._handleFinishLoading}
-        />
+          <AppLoading
+              startAsync={this._loadResourcesAsync}
+              onError={this._handleLoadingError}
+              onFinish={this._handleFinishLoading}
+          />
       );
     } else {
       return (
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <Provider observableStore={observableStore}>
-            <AppNavigator />
-          </Provider>
-        </View>
+          <View style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            <Provider observableStore={observableStore}>
+              <AppNavigator />
+            </Provider>
+          </View>
       );
     }
   }
 
-  async createTable(db) {
-    return new Promise((resolve, reject) => {
-      db.transaction(tx =>
-          tx.executeSql(
-              SQL_QUERY_CREATE_TABLE,
-              [],
-              (_, result) => {
-                console.log('Table created');
-                resolve(result)
-              },
-              (_, error) => {
-                console.log('Error creating table');
-                reject(error)
-              }
-          )
-      );
-    });
-  }
-
-  async dropTable(db) {
-    return new Promise((resolve, reject) => {
-      db.transaction(tx =>
-          tx.executeSql(
-              SQL_QUERY_DROP_TABLE,
-              [],
-              (_, result) => {
-                console.log('Table dropped');
-                resolve(result)
-              },
-              (_, error) => {
-                console.log('Error dropping table');
-                reject(error)
-              }
-          )
-      );
-    });
-  }
-
-  async copyTableData(db) {
-    return new Promise((resolve, reject) => {
-      db.transaction(tx =>
-          tx.executeSql(
-              SQL_QUERY_COPY_DATA,
-              [],
-              (_, result) => {
-                console.log('Data copied');
-                resolve(result)
-              },
-              (_, error) => {
-                console.log('Error copying data');
-                reject(error)
-              }
-          )
-      );
-    });
-  }
   async logTableInfo(db, tableName) {
     return new Promise((resolve, reject) => {
       db.transaction(tx => {
@@ -132,38 +78,66 @@ export default class App extends React.Component {
   async copySqliteFile() {
     // destination file and destination directory
     let destinationDirectory = `${FileSystem.documentDirectory}SQLite`;
-    let destinationFile = `${destinationDirectory}/${sql.databaseName}`;
+    let destinationFile = `${destinationDirectory}/${config.databaseFileName}`;
     console.log("Destination file = " + destinationFile);
-    if (forceReloadData) {
-      console.log("Deleting to force reload")
-      await FileSystem.deleteAsync(destinationFile);
-      let db = await sql.db();
-      db._db.close();
-    }
+
     // does destination database file exist?
     let checkIfExists = await FileSystem.getInfoAsync(destinationFile);
     console.log("Checking if destination file exists.", checkIfExists);
+
+    // if it exists and we want to force a reload
+    if (checkIfExists.exists && forceReloadData) {
+      console.log("Deleting to force reload")
+      await FileSystem.deleteAsync(destinationFile);
+      try {
+        let db = await sql.db();
+        db._db.close();  // this seemed necessary to clear database cache
+      }
+      catch (e) {
+
+      }
+      checkIfExists.exists = false;
+    }
+
     // if destination file exists, abort
     if (checkIfExists.exists) return;
+
     // if not, lets make the /SQLite directory
     let checkIfDirectoryExists = await FileSystem.getInfoAsync(destinationDirectory);
     console.log("Checking if destination directory exists.", checkIfDirectoryExists);
+
     if (!checkIfDirectoryExists) {
       console.log("Creating destination directory: " + destinationDirectory);
       let result = await FileSystem.makeDirectoryAsync(destinationDirectory, {intermediates:true});
       console.log(result);
     }
+
     // copy the database file from the assets into the documents directory
     console.log("Copying file in assets to app directory")
-    result = await FileSystem.downloadAsync( Asset.fromModule(require('./assets/'+INPUT_SQLITE_FILE)).uri, destinationFile);
+    console.log("Database name = " + config.databaseName)
+    let result = await FileSystem.downloadAsync( Asset.fromModule(require(`./assets/${INPUT_SQLITE_FILE}`)).uri, destinationFile);
     console.log(result);
-    let db = await sql.db();
-    await this.logTableInfo(db, 'favorites');
-    await this.logTableInfo(db, 'quotes');
+
+    if (__DEV__) {
+      let db = await sql.db();
+      await this.logTableInfo(db, 'favorites');
+      await this.logTableInfo(db, 'quotes');
+    }
+  }
+
+  _loadQuotesToStore = async () => {
+    console.log("Loading quotes from SQL lite...")
+    await quotesManager.initializeAllQuotes();
+    observableStore.setQuotes(quotesManager.data);
+    //observableStore.setCurrentQuoteById(69);
+    observableStore.randomQuote();
+    console.log("Done loading quotes from SQL lite...")
   }
 
   _loadResourcesAsync = async () => {
     return Promise.all([
+      this.copySqliteFile(),
+      this._loadQuotesToStore(),
       Asset.loadAsync([
         require('./assets/images/header.png'),
         require('./assets/images/heart.png'),
@@ -192,8 +166,7 @@ export default class App extends React.Component {
         'gelasio-bold': require('./assets/fonts/Gelasio-Bold.ttf'),
         'gelasio-semibold': require('./assets/fonts/Gelasio-SemiBold.ttf'),
         'gelasio-italic': require('./assets/fonts/Gelasio-Italic.ttf'),
-      }),
-      this.copySqliteFile()
+      })
     ]);
   };
 

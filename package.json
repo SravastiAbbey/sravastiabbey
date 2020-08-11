@@ -1,5 +1,5 @@
 {
-  "name": "my-new-project",
+  "name": "sravasti-abbey-app",
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
   "scripts": {
@@ -16,26 +16,27 @@
   "dependencies": {
     "@expo/samples": "2.1.1",
     "csv-parser": "^2.3.2",
-    "expo": "^34.0.0",
-    "expo-av": "^6.0.0",
+    "expo": "^35.0.0",
+    "expo-av": "~7.0.1",
+    "expo-file-system": "~7.0.0",
+    "expo-sqlite": "~7.0.0",
     "lodash": "^4.17.15",
     "mobx": "^5.14.0",
     "mobx-react": "^5.4.4",
     "neat-csv": "^5.2.0",
     "react": "16.8.3",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
     "react-native-elements": "^1.2.5",
     "react-native-extended-stylesheet": "^0.12.0",
+    "react-native-parsed-text": "0.0.22",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^2.18.3",
     "react-redux": "^6.0.0",
-    "redux": "^4.0.1",
-    "expo-file-system": "~6.0.0",
-    "expo-sqlite": "~6.0.0"
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "babel-plugin-transform-decorators-legacy": "^1.3.5",
-    "jest-expo": "^34.0.0",
+    "jest-expo": "^35.0.0",
     "redux-devtools": "^3.5.0"
   }
 }

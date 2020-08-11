@@ -1,51 +1,6 @@
-import {Animated, Easing, TouchableOpacity} from "react-native";
-import {AntDesign} from "@expo/vector-icons";
-import {LightenDarkenColor} from "../Utils";
-import Colors from "../constants/Colors";
+import {Animated, Easing} from "react-native";
 import React, {Component} from "react";
-
-const Heart = ({isFavorite, toggleFavorite}) => {
-
-    if (isFavorite) {
-        return (
-            <TouchableOpacity
-                onPress={() => {
-                    toggleFavorite(false);
-                }}
-                style={{
-                    flex:1,
-                    flexDirection:'row-reverse',
-                    padding:10,
-                }}>
-                <AntDesign
-                    name={"heart"}
-                    size={22}
-                    color={LightenDarkenColor(Colors.tintColor, 70)}
-                />
-            </TouchableOpacity>
-        )
-    }
-    else {
-        return (
-            <TouchableOpacity
-                onPress={() => {
-                    toggleFavorite(true);
-                }}
-                style={{
-                    flex:1,
-                    flexDirection:'row-reverse',
-                    padding:10,
-                }}>
-                <AntDesign
-                    name={"hearto"}
-                    size={22}
-                    color={LightenDarkenColor(Colors.gray, 30)}
-                />
-            </TouchableOpacity>
-        )
-    }
-
-};
+import Heart from './Heart';
 
 /*
     This whole thing is simply so that the heart fades and re-appears with the text when
@@ -64,26 +19,30 @@ class AnimatedHeart extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.quoteId !== prevProps.quoteId) {
-            console.log(this.props);
-            Animated.timing(
-                this.state.opacity,
-                {
-                    toValue: 0,
-                    duration: 400,
-                    easing: Easing.in(Easing.sin),
-                },
-            ).start(() => {
-                this.setState({isFavorite:this.props.isFavorite, previousQuoteId:this.props.quoteId}, () => {
-                    Animated.timing(
-                        this.state.opacity,
-                        {
-                            toValue: 1,
-                            duration: 400,
-                            easing: Easing.in(Easing.sin),
-                        },
-                    ).start();
+            if (this.props.skipAnimation) {
+                this.setState({isFavorite:this.props.isFavorite, previousQuoteId:this.props.quoteId});
+            }
+            else {
+                Animated.timing(
+                    this.state.opacity,
+                    {
+                        toValue: 0,
+                        duration: 400,
+                        easing: Easing.in(Easing.sin),
+                    },
+                ).start(() => {
+                    this.setState({isFavorite:this.props.isFavorite, previousQuoteId:this.props.quoteId}, () => {
+                        Animated.timing(
+                            this.state.opacity,
+                            {
+                                toValue: 1,
+                                duration: 400,
+                                easing: Easing.in(Easing.sin),
+                            },
+                        ).start();
+                    });
                 });
-            });
+            }
         }
         else if (this.state.isFavorite !== this.props.isFavorite) {
             this.setState({isFavorite:this.props.isFavorite});

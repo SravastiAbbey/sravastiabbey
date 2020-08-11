@@ -1,10 +1,17 @@
 import config from './config'
-import {SQLite} from 'expo-sqlite';
-import Config from "./config";
-
-const databaseName = config.databaseMakeName(config.databaseFileBaseName, config.databaseVersion)
+import * as SQLite from 'expo-sqlite';
 
 export default {
-    databaseName: databaseName,
-    db: async () => await SQLite.openDatabase(databaseName)
+    databaseName: config.databaseFileName,
+    db: async () => {
+        console.log("Opening database: " + config.databaseFileName)
+        try {
+            return await SQLite.openDatabase(config.databaseFileName)
+        }
+        catch (e) {
+            console.log("Failed to open database!");
+            throw e;
+            return null;
+        }
+    }
 }

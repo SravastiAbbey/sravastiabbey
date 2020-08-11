@@ -1,4 +1,7 @@
 import sql from '../sql'
+import config from "../config";
+
+const quotesTable = config.quotesTableName
 
 class Quotes {
 
@@ -32,6 +35,10 @@ class Quotes {
         try {
             let result = await this.getAllQuotes(false);
             this.data = result.rows._array;
+            // replace dollar signs with new lines
+            this.data.forEach((quote, index) => {
+                this.data[index].quote = this.data[index].quote.replace(/\$/g, "\n\n");
+            })
             console.log("Num quotes = " + this.data.length);
         }
         catch (error) {
@@ -41,17 +48,17 @@ class Quotes {
     }
 
     QUOTES_SELECT_JOIN = `
-        SELECT author,category,pullquote,quote,source,favorite,quotes.id FROM quotes
+        SELECT author,category,pullquote,quote,source,favorite,${quotesTable}.id FROM ${quotesTable}
         LEFT JOIN favorites ON
-        quotes.id = favorites.quote_id
-        ORDER BY quotes.id
+        ${quotesTable}.id = favorites.quote_id
+        ORDER BY ${quotesTable}.id
     `;
 
     QUOTES_FAVORITES_SELECT_JOIN = `
-        SELECT author,category,pullquote,quote,source,favorite,quotes.id FROM quotes
+        SELECT author,category,pullquote,quote,source,favorite,${quotesTable}.id FROM ${quotesTable}
         INNER JOIN favorites ON
-        quotes.id = favorites.quote_id
-        ORDER BY quotes.id
+        ${quotesTable}.id = favorites.quote_id
+        ORDER BY ${quotesTable}.id
     `;
 
     async getAllQuotes(favoritesOnly) {

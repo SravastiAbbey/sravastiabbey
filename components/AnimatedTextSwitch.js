@@ -2,7 +2,56 @@ import React from 'react';
 import {
   Animated,
   Easing,
+    StyleSheet
 } from 'react-native';
+import ParsedText from "react-native-parsed-text";
+
+class StyledText extends React.Component {
+
+    boldRegex = /<\s*[bB][^>]*>(.*?)<\s*\/\s*[bB]>/
+    italicRegex = /<\s*[iI][^>]*>(.*?)<\s*\/\s*[iI]>/
+    underlineRegex = /<\s*[uU][^>]*>(.*?)<\s*\/\s*[uU]>/
+
+    renderBold(matchingString, matches) {
+        return `${matches[1]}`;
+    }
+
+    renderUnderline(matchingString, matches) {
+        return `${matches[1]}`;
+    }
+
+    renderItalic(matchingString, matches) {
+        return `${matches[1]}`;
+    }
+
+    render() {
+        return (
+            <ParsedText
+                style={this.props.style}
+                parse={[
+                    {pattern: this.boldRegex, style: this.styles.bold, renderText: this.renderBold},
+                    {pattern: this.underlineRegex, style: this.styles.underline, renderText: this.renderUnderline},
+                    {pattern: this.italicRegex, style: this.styles.italic, renderText: this.renderItalic},
+
+                ]}
+            >
+                {this.props.text}
+            </ParsedText>
+        )
+    }
+
+    styles = StyleSheet.create({
+        bold: {
+            fontWeight: "bold"
+        },
+        italic: {
+            fontStyle: 'italic'
+        },
+        underline: {
+            textDecorationLine: 'underline'
+        }
+    });
+}
 
 /**
  * Component to animate TextChange with opacity effect.
@@ -27,30 +76,40 @@ class AnimatedTextSwitch extends React.Component {
       const oldColor = this.state.textColor;
       const newColor = this.props.style.color;
 
+      const skipAnimation = this.props.skipAnimation;
+
       if (newText !== oldText || newColor !== oldColor) {
 
-          Animated.timing(
-              this.state.textOpacity,
-              {
-                  toValue: 0,
-                  duration: 400,
-                  easing: Easing.in(Easing.sin),
-              },
-          ).start(() => {
+          if (skipAnimation) {
               this.setState({
                   previousText: newText,
                   textColor: newColor,
-              }, () => {
-                  Animated.timing(
-                      this.state.textOpacity,
-                      {
-                          toValue: 1,
-                          duration: 400,
-                          easing: Easing.in(Easing.sin),
-                      },
-                  ).start();
               });
-          });
+          }
+          else {
+              Animated.timing(
+                  this.state.textOpacity,
+                  {
+                      toValue: 0,
+                      duration: 400,
+                      easing: Easing.in(Easing.sin),
+                  },
+              ).start(() => {
+                  this.setState({
+                      previousText: newText,
+                      textColor: newColor,
+                  }, () => {
+                      Animated.timing(
+                          this.state.textOpacity,
+                          {
+                              toValue: 1,
+                              duration: 400,
+                              easing: Easing.in(Easing.sin),
+                          },
+                      ).start();
+                  });
+              });
+          }
 
       }
 
@@ -66,7 +125,7 @@ class AnimatedTextSwitch extends React.Component {
           color: this.state.textColor,
         }}
       >
-        {this.state.previousText}
+          <StyledText text={this.state.previousText} />
       </Animated.Text>
     );
   }

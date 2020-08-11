@@ -69,4 +69,12 @@ export default styles = StyleSheet.create({
     marginRight: 10,
     alignSelf: 'flex-end',
   },
+  quoteSource: {
+    color: Colors.gray,
+    fontSize: 12,
+    textDecorationLine: 'underline',
+    marginTop: 8,
+    marginRight: 10,
+    alignSelf: 'flex-end',
+  },
 });

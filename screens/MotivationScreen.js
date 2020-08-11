@@ -61,7 +61,7 @@ const HeaderTitle = (props) => {
         textAlign:'center',
         fontWeight: "600",
         color:Colors.tintColor
-      }}>Daily</Text>
+      }}>Morning</Text>
       <Text style={{
         fontSize:17,
         textAlign:'center',

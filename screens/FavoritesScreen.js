@@ -167,9 +167,6 @@ export default class QuoteScreen extends React.Component {
                         <AnimatedTextSwitch style={{...styles.quoteAuthor}}>
                             by {author}
                         </AnimatedTextSwitch>
-                        <AnimatedTextSwitch style={{...styles.quoteCategory}}>
-                            category: {category}
-                        </AnimatedTextSwitch>
                     </View>
                 </TouchableWithoutFeedback>
             </ScrollView>

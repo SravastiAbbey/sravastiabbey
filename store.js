@@ -1,5 +1,7 @@
 import { action, observable, computed } from 'mobx';
 import { AsyncStorage } from 'react-native';
+import quotesManager from './Libraries/Quotes';
+import Quotes from './Libraries/Quotes';
 
 const KEY_PREFIX = "@SravastiApp:";
 
@@ -38,6 +40,9 @@ class ObservableStore {
 
   @observable baseFontFamily = 'open-sans';
   @observable baseFontSize = 18;
+  @observable quotes = observable([]);
+  @observable currentQuoteIndex = 0;
+  @observable currentQuote = null;
 
   /*
     Adjust font size for caveat to a larger size because it appears smaller
@@ -85,7 +90,36 @@ class ObservableStore {
     }
   }
 
+  @action randomQuote() {
+    const min = 0;
+    const max = this.quotes.length - 1;
+    const rand = Math.floor(min + Math.random() * (max - min));
+    this.currentQuoteIndex = rand;
+    return this.currentQuote;
+  }
+
+  @action async setFavorite(quoteId, value) {
+    let index = this.quotes.findIndex(quote => quote.id === quoteId);
+    this.quotes[index].favorite = value;
+    await Quotes.setIsFavorite(quoteId, value ? 1 : 0);
+  }
+
+  @action setCurrentQuoteIndex(index) {
+    this.currentQuoteIndex = index;
+  }
+
+  @action setCurrentQuoteById(quoteId) {
+    let index = this.quotes.findIndex(quote => quote.id === quoteId);
+    this.currentQuoteIndex = index;
+  }
+
+  @action setQuotes(quotes) {
+    this.quotes = observable(quotes);
+    console.log(this.quotes.length + " quotes set.")
+  }
+
   async initializeFromStorage() {
+    console.log("initializing store...");
     //await AsyncStorage.removeItem(KEY_PREFIX+'baseFontSize');
     //await AsyncStorage.removeItem(KEY_PREFIX+'baseFontFamily');
     await this.setIfNotNull('baseFontSize');
