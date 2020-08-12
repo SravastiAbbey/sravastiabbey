@@ -13,14 +13,17 @@ class StyledText extends React.Component {
     underlineRegex = /<\s*[uU][^>]*>(.*?)<\s*\/\s*[uU]>/
 
     renderBold(matchingString, matches) {
+        console.log(matchingString);
         return `${matches[1]}`;
     }
 
     renderUnderline(matchingString, matches) {
+        console.log(matchingString);
         return `${matches[1]}`;
     }
 
     renderItalic(matchingString, matches) {
+        console.log(matchingString);
         return `${matches[1]}`;
     }
 
@@ -29,10 +32,6 @@ class StyledText extends React.Component {
             <ParsedText
                 style={this.props.style}
                 parse={[
-                    {pattern: this.boldRegex, style: this.styles.bold, renderText: this.renderBold},
-                    {pattern: this.underlineRegex, style: this.styles.underline, renderText: this.renderUnderline},
-                    {pattern: this.italicRegex, style: this.styles.italic, renderText: this.renderItalic},
-
                 ]}
             >
                 {this.props.text}

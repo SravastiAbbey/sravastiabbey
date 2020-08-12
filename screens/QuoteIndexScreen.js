@@ -7,6 +7,7 @@ import Heart from '../components/Heart';
 import {inject, observer} from "mobx-react";
 import HeaderBackground from "../components/HeaderBackground";
 import {CheckBox} from 'react-native-elements';
+import styles from "../styles/main";
 
 const QuoteIndexItem = ({quote, onPress,observableStore}) => {
 
@@ -169,106 +170,76 @@ export default class QuoteIndexScreen extends React.Component {
 
         if (!this.props.observableStore.quotes) {
             return (
-                <ScrollView style={styles.container}>
+                <View style={styles.container}>
 
                     <Text style={styles.optionsTitleText}>
                         Loading...
                     </Text>
 
-                </ScrollView>
+                </View>
             );
         }
 
         return (
 
-            <ScrollView style={styles.container}>
+            <View style={styles.container}>
+                <ScrollView style={styles.scrollView}>
 
-                <View style={{
-                    flex:1,
-                    flexDirection: "row",
-                    paddingLeft: 10,
-                }}>
                     <View style={{
                         flex:1,
+                        flexDirection: "row",
+                        paddingLeft: 10,
                     }}>
-                        <Input
-                            placeholder='Search...'
-                            onChangeText={this.handleChangeSearch.bind(this)}
-                            containerStyle={{
-                                backgroundColor:'white'
-                            }}
-                        />
+                        <View style={{
+                            flex:1,
+                        }}>
+                            <Input
+                                placeholder='Search...'
+                                onChangeText={this.handleChangeSearch.bind(this)}
+                                containerStyle={{
+                                    backgroundColor:'white'
+                                }}
+                            />
+                        </View>
+                        <View style={{
+                            width: 130
+                        }}>
+                            <CheckBox
+                                containerStyle={{
+                                    backgroundColor:"white",
+                                    borderWidth: 0
+                                }}
+                                title='Favorites'
+                                right
+                                checked={this.state.favorites}
+                                onPress={() => {
+                                    this.setState({favorites: !this.state.favorites}, () => {
+                                        this.handleChangeSearch(this.state.searchValue)
+                                    })
+                                }}
+                            />
+                        </View>
                     </View>
-                    <View style={{
-                        width: 130
-                    }}>
-                        <CheckBox
-                            containerStyle={{
-                                backgroundColor:"white",
-                                borderWidth: 0
-                            }}
-                            title='Favorites'
-                            right
-                            checked={this.state.favorites}
-                            onPress={() => {
-                                this.setState({favorites: !this.state.favorites}, () => {
-                                    this.handleChangeSearch(this.state.searchValue)
-                                })
-                            }}
-                        />
-                    </View>
-                </View>
 
 
-                <Text style={styles.optionsTitleText}>
-                    {this.state.filteredQuotes.length} Quotes
-                </Text>
+                    <Text style={styles.optionsTitleText}>
+                        {this.state.filteredQuotes.length} Quotes
+                    </Text>
 
-                <FlatList
-                    data={this.state.filteredQuotes}
-                    keyExtractor={(item, index) => `${index}`}
-                    renderItem={({item, index}) => (
-                        <QuoteIndexItem
-                            onPress={this.handlePress}
-                            quote={item}
-                            observableStore={this.props.observableStore}
-                        />
-                    )}
-                />
+                    <FlatList
+                        data={this.state.filteredQuotes}
+                        keyExtractor={(item, index) => `${index}`}
+                        renderItem={({item, index}) => (
+                            <QuoteIndexItem
+                                onPress={this.handlePress}
+                                quote={item}
+                                observableStore={this.props.observableStore}
+                            />
+                        )}
+                    />
 
-            </ScrollView>
+                </ScrollView>
+            </View>
         );
     }
-
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: 15,
-        backgroundColor: 'white'
-    },
-    optionsTitleText: {
-        fontSize: 16,
-        marginLeft: 15,
-        marginTop: 9,
-        marginBottom: 12,
-        textAlign: 'center',
-        backgroundColor: 'white'
-    },
-    optionIconContainer: {
-        marginRight: 9,
-    },
-    option: {
-        backgroundColor: '#fdfdfd',
-        paddingHorizontal: 15,
-        paddingVertical: 15,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#EDEDED',
-        flex: 1
-    },
-    optionText: {
-        fontSize: 15,
-        marginTop: 1,
-    },
-});

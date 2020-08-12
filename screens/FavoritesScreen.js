@@ -144,32 +144,34 @@ export default class QuoteScreen extends React.Component {
         let quoteText = quote.quote.replace(/\$/g, "\n\n");
 
         return (
-            <ScrollView style={styles.container}>
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between'
-                }}>
-                    <Text style={numFavsTextStyle}>Favorite {this.state.currentQuoteIndex+1} of {this.quotes.length}</Text>
-                    <AnimatedHeart quoteId={id} isFavorite={this.state.isFavorite} toggleFavorite={ async (value) => {
-                        await Quotes.setIsFavorite(id, value ? 1 : 0);
-                        this.setState({isFavorite:value});
-                    }}/>
-                </View>
-
-                <TouchableWithoutFeedback onPress={ this.handleClick }>
-                    <View style={[styles.quoteContainer, {paddingBottom:50}]}>
-                        <AnimatedTextSwitch style={pullQuoteTextStyle}>
-                            {pullQuote}
-                        </AnimatedTextSwitch>
-                        <AnimatedTextSwitch style={quoteTextStyle}>
-                            {quoteText}
-                        </AnimatedTextSwitch>
-                        <AnimatedTextSwitch style={{...styles.quoteAuthor}}>
-                            by {author}
-                        </AnimatedTextSwitch>
+            <View style={styles.container}>
+                <ScrollView style={styles.scrollView}>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text style={numFavsTextStyle}>Favorite {this.state.currentQuoteIndex+1} of {this.quotes.length}</Text>
+                        <AnimatedHeart quoteId={id} isFavorite={this.state.isFavorite} toggleFavorite={ async (value) => {
+                            await Quotes.setIsFavorite(id, value ? 1 : 0);
+                            this.setState({isFavorite:value});
+                        }}/>
                     </View>
-                </TouchableWithoutFeedback>
-            </ScrollView>
+
+                    <TouchableWithoutFeedback onPress={ this.handleClick }>
+                        <View style={[styles.quoteContainer, {paddingBottom:50}]}>
+                            <AnimatedTextSwitch style={pullQuoteTextStyle}>
+                                {pullQuote}
+                            </AnimatedTextSwitch>
+                            <AnimatedTextSwitch style={quoteTextStyle}>
+                                {quoteText}
+                            </AnimatedTextSwitch>
+                            <AnimatedTextSwitch style={{...styles.quoteAuthor}}>
+                                by {author}
+                            </AnimatedTextSwitch>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </ScrollView>
+            </View>
         );
     }
 

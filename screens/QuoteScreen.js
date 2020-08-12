@@ -140,7 +140,8 @@ export default class QuoteScreen extends React.Component {
             fontSize: adjustedFontSize,
             fontFamily: baseFontFamily,
             padding: 20,
-            paddingTop: 0
+            paddingTop: 0,
+            marginBottom:10
         }]);
 
         let pullQuoteTextStyle = StyleSheet.flatten([styles.quoteText, {
@@ -160,29 +161,33 @@ export default class QuoteScreen extends React.Component {
 
         if (this.props.observableStore.quotes == null) {
             return (
-                <ScrollView style={styles.container}>
-                    <TouchableWithoutFeedback>
-                        <View style={[styles.quoteContainer, {paddingBottom:50}]}>
-                            <AnimatedTextSwitch style={pullQuoteTextStyle}>
-                                Error loading quotes.
-                            </AnimatedTextSwitch>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </ScrollView>
+                <View style={styles.container}>
+                    <ScrollView style={styles.scrollView}>
+                        <TouchableWithoutFeedback>
+                            <View style={[styles.quoteContainer, {paddingBottom:50}]}>
+                                <AnimatedTextSwitch style={pullQuoteTextStyle}>
+                                    Error loading quotes.
+                                </AnimatedTextSwitch>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </ScrollView>
+                </View>
             );
         }
 
         if (quotesLength === 0) {
             return (
-                <ScrollView style={styles.container}>
-                    <TouchableWithoutFeedback>
-                        <View style={[styles.quoteContainer, {paddingBottom:50}]}>
-                            <AnimatedTextSwitch style={pullQuoteTextStyle}>
-                                No quotes found.
-                            </AnimatedTextSwitch>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </ScrollView>
+                <View style={styles.container}>
+                    <ScrollView style={styles.scrollView}>
+                        <TouchableWithoutFeedback>
+                            <View style={[styles.quoteContainer, {paddingBottom:50}]}>
+                                <AnimatedTextSwitch style={pullQuoteTextStyle}>
+                                    No quotes found.
+                                </AnimatedTextSwitch>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </ScrollView>
+                </View>
             );
         }
 
@@ -193,7 +198,7 @@ export default class QuoteScreen extends React.Component {
         //let quoteText = quote.quote.replace(/\$/g, "\n\n");
         let quoteText = quote.quote;
 
-        console.log(quoteText);
+        console.log("QUOTE="+quoteText);
 
         let authorBlock = null;
 
@@ -215,37 +220,39 @@ export default class QuoteScreen extends React.Component {
         }
 
         return (
-            <ScrollView style={styles.container}>
+            <View style={styles.container}>
+                <ScrollView style={styles.scrollView}>
 
-                <View style={{
-                    flex:1,
-                    flexDirection:"row",
-                    justifyContent:"space-between"
-                }}>
-                    <Explanation textStyle={explanationTextStyle}/>
-                    <AnimatedHeart skipAnimation quoteId={id} isFavorite={favorite} toggleFavorite={ async (value) => {
-                        await this.props.observableStore.setFavorite(id, value)
-                    }}/>
-                </View>
-
-
-                <TouchableWithoutFeedback onPress={ this.handleClick }>
-                    <View style={[styles.quoteContainer, {paddingBottom:50}]}>
-                        <AnimatedTextSwitch style={pullQuoteTextStyle} skipAnimation>
-                            {pullQuote}
-                        </AnimatedTextSwitch>
-                        <AnimatedTextSwitch style={quoteTextStyle} skipAnimation>
-                            {quoteText}
-                        </AnimatedTextSwitch>
-                        {authorBlock}
-                        { __DEV__ ?
-                            <AnimatedTextSwitch style={{...styles.quoteAuthor}} skipAnimation>
-                                {currentIndex}
-                            </AnimatedTextSwitch> : null
-                        }
+                    <View style={{
+                        flex:1,
+                        flexDirection:"row",
+                        justifyContent:"space-between"
+                    }}>
+                        <Explanation textStyle={explanationTextStyle}/>
+                        <AnimatedHeart skipAnimation quoteId={id} isFavorite={favorite} toggleFavorite={ async (value) => {
+                            await this.props.observableStore.setFavorite(id, value)
+                        }}/>
                     </View>
-                </TouchableWithoutFeedback>
-            </ScrollView>
+
+
+                    <TouchableWithoutFeedback onPress={ this.handleClick }>
+                        <View style={[styles.quoteContainer, {paddingBottom:50}]}>
+                            <AnimatedTextSwitch style={pullQuoteTextStyle} skipAnimation>
+                                {pullQuote}
+                            </AnimatedTextSwitch>
+                            <AnimatedTextSwitch style={quoteTextStyle} skipAnimation>
+                                {quoteText}
+                            </AnimatedTextSwitch>
+                            {authorBlock}
+                            { __DEV__ ?
+                                <AnimatedTextSwitch style={{...styles.quoteAuthor}} skipAnimation>
+                                    {currentIndex}
+                                </AnimatedTextSwitch> : null
+                            }
+                        </View>
+                    </TouchableWithoutFeedback>
+                </ScrollView>
+            </View>
         );
     }
 }

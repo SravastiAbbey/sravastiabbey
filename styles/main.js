@@ -5,6 +5,10 @@ import {LightenDarkenColor} from "../Utils";
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+  },
+  scrollView: {
+    flex: 1,
     paddingTop: 15,
     backgroundColor: '#fff',
   },
@@ -73,8 +77,31 @@ export default styles = StyleSheet.create({
     color: Colors.gray,
     fontSize: 12,
     textDecorationLine: 'underline',
-    marginTop: 8,
+    marginTop: 20,
     marginRight: 10,
     alignSelf: 'flex-end',
+  },
+  optionsTitleText: {
+    fontSize: 16,
+    marginLeft: 15,
+    marginTop: 9,
+    marginBottom: 12,
+    textAlign: 'center',
+    backgroundColor: 'white'
+  },
+  optionIconContainer: {
+    marginRight: 9,
+  },
+  option: {
+    backgroundColor: '#fdfdfd',
+    paddingHorizontal: 15,
+    paddingVertical: 15,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#EDEDED',
+    flex: 1
+  },
+  optionText: {
+    fontSize: 15,
+    marginTop: 1,
   },
 });
