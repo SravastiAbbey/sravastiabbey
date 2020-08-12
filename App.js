@@ -11,6 +11,8 @@ import observableStore from './store';
 import sql from './sql'
 import config from "./config";
 import quotesManager from "./Libraries/Quotes";
+import { enableScreens } from 'react-native-screens';
+enableScreens();
 
 // imported SQLite file, converted from csv
 const INPUT_SQLITE_FILE='quotes_0_1.db' //config.databaseName;
