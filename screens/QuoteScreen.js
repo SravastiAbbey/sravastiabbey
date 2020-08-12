@@ -140,8 +140,7 @@ export default class QuoteScreen extends React.Component {
             fontSize: adjustedFontSize,
             fontFamily: baseFontFamily,
             padding: 20,
-            paddingTop: 0,
-            marginBottom:10
+            paddingTop: 0
         }]);
 
         let pullQuoteTextStyle = StyleSheet.flatten([styles.quoteText, {
