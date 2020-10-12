@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, ScrollView, Text, View} from 'react-native';
+import {Dimensions, Image, ScrollView, Text, View} from 'react-native';
 import Colors from '../constants/Colors';
 import Links from '../constants/Links';
 import Anchor from '../components/Anchor';
@@ -28,6 +28,8 @@ export default class PracticeScreen extends React.Component {
   };
 
   render() {
+
+    let deviceWidth = Dimensions.get('window').width;
 
     // get the store
     let store = this.props.observableStore;
@@ -62,7 +64,7 @@ export default class PracticeScreen extends React.Component {
       margin:0,
       marginTop:10
     }];
-    
+
     return (
         <View style={styles.container}>
           <ScrollView style={styles.scrollView}>
@@ -76,6 +78,15 @@ export default class PracticeScreen extends React.Component {
                 title={"Meditation on the Buddha"}
                 sound={sounds.meditationOnTheBuddha}
                 description={"Guided meditation by Venerable Chodron on the Buddha."}
+              />
+
+              <Image
+                  style={{
+                    width: deviceWidth-40,
+                    height: (deviceWidth-40) * 1.418,
+                    margin: 10
+                  }}
+                  source={require('../assets/images/Buddha.png')}
               />
 
               <Text style={bodyTextStyle}>

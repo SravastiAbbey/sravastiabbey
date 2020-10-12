@@ -14,7 +14,6 @@ import AnimatedHeart from "../components/AnimatedHeart";
 import {AntDesign} from "@expo/vector-icons";
 import {LightenDarkenColor} from "../Utils";
 import _ from 'lodash'
-import {Button} from "react-native-elements";
 import * as WebBrowser from "expo-web-browser";
 
 const Explanation = ({textStyle, iconStyle}) => {
@@ -120,8 +119,8 @@ export default class QuoteScreen extends React.Component {
         this.props.observableStore.randomQuote();
     }
 
-    handlePressSource = (source) => {
-        WebBrowser.openBrowserAsync(source);
+    handlePressSource = async (source) => {
+        await WebBrowser.openBrowserAsync(source);
     };
 
     render() {
@@ -133,7 +132,7 @@ export default class QuoteScreen extends React.Component {
         let adjustedFontSize = this.props.observableStore.adjustedFontSize;
         let baseFontFamily = this.props.observableStore.baseFontFamily;
         let skipAnimation = _.get(this.props, 'navigation.state.params.skipAnimation', false);
-
+        console.log("skipAnimation="+skipAnimation);
 
         // combined font props from store with global styles
         let quoteTextStyle = StyleSheet.flatten([styles.quoteText, {
@@ -194,25 +193,25 @@ export default class QuoteScreen extends React.Component {
         let author = quote.author;
         let id = quote.id;
         let source = quote.source;
-        //let quoteText = quote.quote.replace(/\$/g, "\n\n");
         let quoteText = quote.quote;
 
         console.log("QUOTE="+quoteText);
+        console.log("SOURCE="+source);
 
         let authorBlock = null;
 
         if (author != '') {
             if (source != '') {
                 authorBlock =
-                    <AnimatedTextSwitch style={{...styles.quoteSource}} skipAnimation>
-                        <Text onPress={() => {
-                            this.handlePressSource(source)
+                    <AnimatedTextSwitch style={{...styles.quoteSource}} skipAnimation={skipAnimation}>
+                        <Text onPress={async () => {
+                            await this.handlePressSource(source)
                         }}>by {author} (press to see source)</Text>
                     </AnimatedTextSwitch>
             }
             else {
                 authorBlock =
-                    <AnimatedTextSwitch style={{...styles.quoteAuthor}} skipAnimation>
+                    <AnimatedTextSwitch style={{...styles.quoteAuthor}} skipAnimation={skipAnimation}>
                         by {author}
                     </AnimatedTextSwitch>
             }
@@ -228,7 +227,7 @@ export default class QuoteScreen extends React.Component {
                         justifyContent:"space-between"
                     }}>
                         <Explanation textStyle={explanationTextStyle}/>
-                        <AnimatedHeart skipAnimation quoteId={id} isFavorite={favorite} toggleFavorite={ async (value) => {
+                        <AnimatedHeart skipAnimation={skipAnimation} quoteId={id} isFavorite={favorite} toggleFavorite={ async (value) => {
                             await this.props.observableStore.setFavorite(id, value)
                         }}/>
                     </View>
@@ -236,15 +235,15 @@ export default class QuoteScreen extends React.Component {
 
                     <TouchableWithoutFeedback onPress={ this.handleClick }>
                         <View style={[styles.quoteContainer, {paddingBottom:50}]}>
-                            <AnimatedTextSwitch style={pullQuoteTextStyle} skipAnimation>
+                            <AnimatedTextSwitch style={pullQuoteTextStyle} skipAnimation={skipAnimation}>
                                 {pullQuote}
                             </AnimatedTextSwitch>
-                            <AnimatedTextSwitch style={quoteTextStyle} skipAnimation>
+                            <AnimatedTextSwitch style={quoteTextStyle} skipAnimation={skipAnimation}>
                                 {quoteText}
                             </AnimatedTextSwitch>
                             {authorBlock}
                             { __DEV__ ?
-                                <AnimatedTextSwitch style={{...styles.quoteAuthor}} skipAnimation>
+                                <AnimatedTextSwitch style={{...styles.quoteAuthor}} skipAnimation={skipAnimation}>
                                     {currentIndex}
                                 </AnimatedTextSwitch> : null
                             }

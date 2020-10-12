@@ -1,16 +1,16 @@
 {
   "expo": {
     "name": "sravasti-abbey",
-    "description": "A Sravasti Aabbey App.",
+    "description": "A Sravasti Abbey App.",
     "slug": "sravasti-abbey",
     "privacy": "public",
     "platforms": [
       "ios",
       "android"
     ],
-    "version": "0.1",
+    "version": "0.4",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/sravasti-abbey-app-icon-1024.png",
     "splash": {
       "image": "./assets/images/splash2.png",
       "resizeMode": "contain",
@@ -18,7 +18,7 @@
     },
     "android": {
       "package": "org.sravastiabbey.mobileapp",
-      "versionCode": 1
+      "versionCode": 4
     },
     "updates": {
       "fallbackToCacheTimeout": 0

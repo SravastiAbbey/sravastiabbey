@@ -1,5 +1,6 @@
+import 'react-native-gesture-handler';
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native';
 import { AppLoading} from 'expo';
 import * as FileSystem from 'expo-file-system';
 import { Asset } from 'expo-asset';
@@ -24,6 +25,7 @@ export default class App extends React.Component {
 
   state = {
     isLoadingComplete: false,
+    error: null
   };
 
   async componentDidMount() {
@@ -39,7 +41,15 @@ export default class App extends React.Component {
               onFinish={this._handleFinishLoading}
           />
       );
-    } else {
+    }
+    else if (this.state.error !== null) {
+      return (
+          <View style={[styles.container, {margin:50}]}>
+            <Text>{this.state.error}</Text>
+          </View>
+      )
+    }
+    else {
       return (
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
@@ -77,7 +87,7 @@ export default class App extends React.Component {
    and index column) and copy the data over. forceReloadData can be used
    to force a reload of quotes from the sqlite file.
    */
-  async copySqliteFile() {
+  async _copySqliteFile() {
     // destination file and destination directory
     let destinationDirectory = `${FileSystem.documentDirectory}SQLite`;
     let destinationFile = `${destinationDirectory}/${config.databaseFileName}`;
@@ -108,7 +118,7 @@ export default class App extends React.Component {
     let checkIfDirectoryExists = await FileSystem.getInfoAsync(destinationDirectory);
     console.log("Checking if destination directory exists.", checkIfDirectoryExists);
 
-    if (!checkIfDirectoryExists) {
+    if (!checkIfDirectoryExists.exists) {
       console.log("Creating destination directory: " + destinationDirectory);
       let result = await FileSystem.makeDirectoryAsync(destinationDirectory, {intermediates:true});
       console.log(result);
@@ -131,15 +141,18 @@ export default class App extends React.Component {
     console.log("Loading quotes from SQL lite...")
     await quotesManager.initializeAllQuotes();
     observableStore.setQuotes(quotesManager.data);
-    //observableStore.setCurrentQuoteById(69);
     observableStore.randomQuote();
     console.log("Done loading quotes from SQL lite...")
   }
 
+  _loadDatabaseAndQuotes = async () => {
+    await this._copySqliteFile();
+    await this._loadQuotesToStore(); // this needs to come after _copySqliteFile()
+  }
+
   _loadResourcesAsync = async () => {
     return Promise.all([
-      this.copySqliteFile(),
-      this._loadQuotesToStore(),
+      this._loadDatabaseAndQuotes(),
       Asset.loadAsync([
         require('./assets/images/header.png'),
         require('./assets/images/heart.png'),
@@ -176,6 +189,7 @@ export default class App extends React.Component {
     // In this case, you might want to report the error to your error
     // reporting service, for example Sentry
     console.warn(error);
+    this.setState({ isLoadingComplete: true, error: error.toString() });
   };
 
   _handleFinishLoading = () => {
