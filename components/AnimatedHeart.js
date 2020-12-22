@@ -29,6 +29,7 @@ class AnimatedHeart extends Component {
                         toValue: 0,
                         duration: 400,
                         easing: Easing.in(Easing.sin),
+                        useNativeDriver: true,
                     },
                 ).start(() => {
                     this.setState({isFavorite:this.props.isFavorite, previousQuoteId:this.props.quoteId}, () => {
@@ -38,6 +39,7 @@ class AnimatedHeart extends Component {
                                 toValue: 1,
                                 duration: 400,
                                 easing: Easing.in(Easing.sin),
+                                useNativeDriver: true,
                             },
                         ).start();
                     });

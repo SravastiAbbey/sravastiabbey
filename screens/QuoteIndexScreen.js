@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, FlatList, ScrollView, Platform} from 'react-native';
+import {Text, View, FlatList, ScrollView, Platform, SafeAreaView} from 'react-native';
 import {Input} from 'react-native-elements';
 import Touchable from 'react-native-platform-touchable';
 import Colors from '../constants/Colors';
@@ -182,64 +182,63 @@ export default class QuoteIndexScreen extends React.Component {
 
         return (
 
-            <View style={styles.container}>
-                <ScrollView style={styles.scrollView}>
-
+            <SafeAreaView style={styles.container}>
                     <View style={{
-                        flex:1,
-                        flexDirection: "row",
-                        paddingLeft: 10,
+                        height:100,
                     }}>
                         <View style={{
                             flex:1,
+                            flexDirection: "row",
+                            paddingLeft: 10,
                         }}>
-                            <Input
-                                placeholder='Search...'
-                                onChangeText={this.handleChangeSearch.bind(this)}
-                                containerStyle={{
-                                    backgroundColor:'white'
-                                }}
-                            />
+                            <View style={{
+                                flex:1,
+                            }}>
+                                <Input
+                                    placeholder='Search...'
+                                    onChangeText={this.handleChangeSearch.bind(this)}
+                                    containerStyle={{
+                                        backgroundColor:'white'
+                                    }}
+                                />
+                            </View>
+                            <View style={{
+                                width: 130
+                            }}>
+                                <CheckBox
+                                    containerStyle={{
+                                        backgroundColor:"white",
+                                        borderWidth: 0
+                                    }}
+                                    title='Favorites'
+                                    right
+                                    checked={this.state.favorites}
+                                    onPress={() => {
+                                        this.setState({favorites: !this.state.favorites}, () => {
+                                            this.handleChangeSearch(this.state.searchValue)
+                                        })
+                                    }}
+                                />
+                            </View>
                         </View>
-                        <View style={{
-                            width: 130
-                        }}>
-                            <CheckBox
-                                containerStyle={{
-                                    backgroundColor:"white",
-                                    borderWidth: 0
-                                }}
-                                title='Favorites'
-                                right
-                                checked={this.state.favorites}
-                                onPress={() => {
-                                    this.setState({favorites: !this.state.favorites}, () => {
-                                        this.handleChangeSearch(this.state.searchValue)
-                                    })
-                                }}
-                            />
+                        <View style={{flex:1}}>
+                            <Text style={styles.optionsTitleText}>
+                                {this.state.filteredQuotes.length} Quotes
+                            </Text>
                         </View>
                     </View>
-
-
-                    <Text style={styles.optionsTitleText}>
-                        {this.state.filteredQuotes.length} Quotes
-                    </Text>
-
-                    <FlatList
-                        data={this.state.filteredQuotes}
-                        keyExtractor={(item, index) => `${index}`}
-                        renderItem={({item, index}) => (
-                            <QuoteIndexItem
-                                onPress={this.handlePress}
-                                quote={item}
-                                observableStore={this.props.observableStore}
-                            />
-                        )}
-                    />
-
-                </ScrollView>
-            </View>
+                <FlatList
+                    data={this.state.filteredQuotes}
+                    keyExtractor={(item, index) => `${index}`}
+                    renderItem={({item, index}) => (
+                        <QuoteIndexItem
+                            onPress={this.handlePress}
+                            quote={item}
+                            observableStore={this.props.observableStore}
+                        />
+                    )}
+                />
+            </SafeAreaView>
         );
     }
 }

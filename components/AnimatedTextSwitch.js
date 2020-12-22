@@ -95,6 +95,7 @@ class AnimatedTextSwitch extends React.Component {
                       toValue: 0,
                       duration: 400,
                       easing: Easing.in(Easing.sin),
+                      useNativeDriver: true,
                   },
               ).start(() => {
                   this.setState({
@@ -107,6 +108,7 @@ class AnimatedTextSwitch extends React.Component {
                               toValue: 1,
                               duration: 400,
                               easing: Easing.in(Easing.sin),
+                              useNativeDriver: true,
                           },
                       ).start();
                   });
