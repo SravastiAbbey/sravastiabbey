@@ -1,4 +1,4 @@
-const databaseVersion = "0_1";
+const databaseVersion = "0_2";
 const databaseFileBaseName = "quotes";
 // this needs to match INPUT_SQLITE_FILE in App.js
 

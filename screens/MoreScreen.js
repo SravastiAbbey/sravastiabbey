@@ -149,7 +149,7 @@ export default class MoreScreen extends React.Component {
     };
 
     _handlePressReportBug = () => {
-        Linking.openURL('mailto:office.sravasti@gmail.com?subject=Mobile+App+Bug+Report');
+        Linking.openURL('mailto:andrewcarterhughes@gmail.com?subject=Mobile+App+Bug+Report');
     };
 
     _handleBuddhaHall = () => {

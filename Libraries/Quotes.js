@@ -1,5 +1,6 @@
 import sql from '../sql'
 import config from "../config";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const quotesTable = config.quotesTableName
 
@@ -82,7 +83,38 @@ class Quotes {
         });
     }
 
+    async getIsFavorite_AsyncStorage(id, isFavorite) {
+
+        let raw = await AsyncStorage.getItem(`favorites`);
+        let favs = JSON.parse(raw);
+        if (favs === null) favs = [];
+
+        return favs.includes(id)
+
+    }
+
+    async setIsFavorite_AsyncStorage(id, isFavorite) {
+
+        let raw = await AsyncStorage.getItem(`favorites`);
+        let favs = JSON.parse(raw);
+        if (favs === null || !Array.isArray(favs)) favs = [];
+
+        if (isFavorite) {
+            if (!favs.includes(id)) {
+                favs.push(id);
+                await AsyncStorage.setItem(`favorites`,JSON.stringify(favs));
+            }
+        }
+        else {
+            if (favs.includes(id)) {
+                favs = favs.filter(v => v !== id)
+                await AsyncStorage.setItem(`favorites`,JSON.stringify(favs));
+            }
+        }
+    }
+
     async setIsFavorite(id, isFavorite) {
+        await this.setIsFavorite_AsyncStorage(id, isFavorite);
         if (isFavorite) {
             return new Promise((resolve, reject) => {
                 this.db.transaction(tx => {

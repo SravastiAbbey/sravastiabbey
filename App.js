@@ -16,7 +16,8 @@ import { enableScreens } from 'react-native-screens';
 enableScreens();
 
 // imported SQLite file, converted from csv
-const INPUT_SQLITE_FILE='quotes_0_1.db' //config.databaseName;
+const INPUT_SQLITE_FILE='quotes_0_2.db' //  ALSO NEED TO UPDATE config.js !!!
+const OLD_SQLITE_FILE='quotes_0_1.db' //  ALSO NEED TO UPDATE config.js !!!
 
 // can be used to force app to reload database
 const forceReloadData = false;
@@ -128,6 +129,7 @@ export default class App extends React.Component {
     console.log("Copying file in assets to app directory")
     console.log("Database name = " + config.databaseName)
     let result = await FileSystem.downloadAsync( Asset.fromModule(require(`./assets/${INPUT_SQLITE_FILE}`)).uri, destinationFile);
+
     console.log(result);
 
     if (__DEV__) {
